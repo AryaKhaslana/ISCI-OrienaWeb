@@ -8,9 +8,6 @@ import {
   Plus, 
   Cookie, 
   MessageCircle,
-  Medal,     // Icon baru buat section Keunggulan
-  Flame,     // Icon baru buat section Keunggulan
-  ShieldCheck // Icon baru buat section Keunggulan
 } from 'lucide-react';
 // IMPORT CLIENT SUPABASE LU DI SINI (Sesuaikan foldernya)
 import { supabase } from '../lib/supabase'; 
