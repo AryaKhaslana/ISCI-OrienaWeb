@@ -31,7 +31,7 @@ Warna untuk menarik perhatian dan interaksi (tombol, link, badge).
 ### Text & Neutrals
 Warna untuk teks dan garis batas (border).
 * **Dusty Rose:** `#A86360` — [Misal: Cokelat gelap untuk kontras yang nyaman]
-* **Deep Crimson:** `##7A1712` — [Misal: Versi lebih soft dari heading text]
+* **Deep Crimson:** `#7A1712` — [Misal: Versi lebih soft dari heading text]
 * **Burgundy Wine:** `#4A1513` — [Misal: Garis pemisah atau outline form]
 
 ---
@@ -75,6 +75,7 @@ Warna untuk teks dan garis batas (border).
 ### Cards & Containers
 * **Default Content Card:**
   * Background: `#[#EFE5D5]`
+  * color Border: `#7A1712`
   * Border Radius: `[16px]`
   * Drop Shadow: `[ 0px 4px 12px rgba(0,0,0,0.05)]`
   * Padding dalam: `[ 24px]`
@@ -117,18 +118,6 @@ Skala spacing berbasis `1rem = 16px`. Desain premium membutuhkan banyak *whitesp
   * **Hover Interaction:** Menerapkan efek *smooth subtle zoom* (`transform: scale(1.03)`) dengan transisi `0.5s cubic-bezier(0.25, 1, 0.5, 1)` saat gambar disorot kursor untuk memberikan impresi interaksi yang premium.
 
 ---
-
-## 7. Do's and Don'ts
-
-### ✅ Do (Lakukan)
-* [Misal: Gunakan Vanilla Cream sebagai background utama agar mata rileks.]
-* [Misal: Berikan whitespace yang lega antar section agar terkesan premium.]
-* [...]
-
-### ❌ Don't (Hindari)
-* [Misal: Jangan gunakan pure black (#000000) untuk teks, gunakan Espresso Brown.]
-* [Misal: Jangan gunakan warna Deep Crimson sebagai background teks paragraf panjang.]
-* [...]## 7. Do's and Don'ts
 
 ### ✅ Do (Lakukan)
 * **Gunakan Vanilla Cream (`#FDFBF7`) sebagai kanvas utama:** Warna ini adalah kunci untuk membuat mata rileks dan memberikan kesan hangat ala *bakery*.
