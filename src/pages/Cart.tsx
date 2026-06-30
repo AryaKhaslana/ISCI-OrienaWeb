@@ -65,18 +65,18 @@ export default function Cart({ cartItems, updateCartItem, setCurrentView }: Cart
       initial={{ opacity: 0 }} 
       animate={{ opacity: 1 }} 
       exit={{ opacity: 0 }} 
-      className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-24 font-jakarta"
+      className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-[80px] font-jakarta"
     >
       
       {/* SECTION: HEADER */}
       <div className="text-center mb-16">
-        <h1 className="text-4xl md:text-5xl font-playfair font-black text-[#4A3022] mb-4">
+        <h1 className="text-[42px] md:text-[56px] font-playfair font-bold text-[#2A1610] mb-4">
           Kasir Oriena.
         </h1>
-        <p className="text-lg text-[#4A3022]/70 max-w-2xl mx-auto">
+        <p className="text-[16px] text-[#2A1610]/70 max-w-2xl mx-auto font-normal">
           {cartCount > 0 
-            ? "Pesananmu udah di meja kasir, tinggal konfirmasi pengiriman aja." 
-            : "Keranjangmu masih kosong nih. Yuk jajan dulu!"}
+            ? "Pesanan Anda sudah di meja kasir, silakan lengkapi informasi pengiriman." 
+            : "Keranjang Anda masih kosong. Mari jelajahi koleksi rasa kami."}
         </p>
       </div>
 
@@ -84,24 +84,24 @@ export default function Cart({ cartItems, updateCartItem, setCurrentView }: Cart
         
         /* SECTION: EMPTY CART STATE */
         <motion.div 
-          initial={{ scale: 0.9 }} 
-          animate={{ scale: 1 }} 
-          className="bg-white p-12 rounded-[3rem] shadow-2xl shadow-[#4A3022]/5 border-4 border-[#4A3022] text-center flex flex-col items-center max-w-2xl mx-auto"
+          initial={{ scale: 0.95, opacity: 0 }} 
+          animate={{ scale: 1, opacity: 1 }} 
+          className="bg-[#EFE5D5] p-10 md:p-16 rounded-[16px] shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-[#7A1712] text-center flex flex-col items-center max-w-2xl mx-auto"
         >
-          <div className="w-24 h-24 bg-[#FAF5E9] border-4 border-[#4A3022] text-[#4A3022] rounded-full flex items-center justify-center mb-6 floating">
-            <ShoppingBag size={40} />
+          <div className="w-20 h-20 bg-[#FDFBF7] border border-[#7A1712]/20 text-[#7A1712] rounded-full flex items-center justify-center mb-6 shadow-sm">
+            <ShoppingBag size={32} strokeWidth={1.5} />
           </div>
-          <h3 className="text-3xl font-playfair font-black text-[#4A3022] mb-2">
-            Belum ada pesanan
+          <h3 className="text-[28px] font-playfair font-semibold text-[#2A1610] mb-3">
+            Belum Ada Pesanan
           </h3>
-          <p className="text-[#4A3022]/70 font-bold mb-8">
-            Pilih kue favoritmu di Katalog atau Rakit Hampers dulu yuk.
+          <p className="text-[#2A1610]/70 font-normal text-[15px] mb-8 max-w-sm">
+            Temukan berbagai kreasi pastry dan cookies artisan dari oven kami.
           </p>
           <button 
             onClick={() => setCurrentView('katalog')} 
-            className="bg-[#D97736] text-white px-8 py-4 border-4 border-[#4A3022] shadow-[6px_6px_0px_0px_#4A3022] rounded-xl font-black flex items-center gap-2 hover:-translate-y-1 active:translate-y-0 active:shadow-[2px_2px_0px_0px_#4A3022] transition-all"
+            className="bg-[#7A1712] text-[#FDFBF7] px-8 py-3.5 rounded-[8px] font-bold flex items-center gap-3 hover:bg-[#5E120E] hover:-translate-y-[2px] transition-all duration-300 shadow-[0px_4px_12px_rgba(122,23,18,0.2)]"
           >
-            Ke Katalog Produk <ArrowRight size={20} />
+            Lihat Katalog Produk <ArrowRight size={18} strokeWidth={2} />
           </button>
         </motion.div>
       ) : (
@@ -109,14 +109,16 @@ export default function Cart({ cartItems, updateCartItem, setCurrentView }: Cart
         /* SECTION: ACTIVE CART & CHECKOUT FORM */
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
 
-          {/* SISI KIRI: ANIMASI STRUK KASIR */}
+          {/* SISI KIRI: ANIMASI STRUK KASIR (DESAIN STRUK TIDAK DIUBAH, HANYA WARNA FRAME ATAS) */}
           <div className="lg:col-span-5 flex flex-col items-center overflow-hidden pt-4">
             <div className="w-full max-w-sm relative">
-              <div className="bg-[#4A3022] w-full h-16 rounded-t-3xl relative z-20 flex items-center justify-center border-b-4 border-black/40 shadow-xl">
+              {/* Frame printer disesuaikan warnanya ke Espresso Brown agar matching */}
+              <div className="bg-[#2A1610] w-full h-16 rounded-t-3xl relative z-20 flex items-center justify-center border-b-4 border-black/40 shadow-xl">
                 <Printer className="text-white/50" size={24} />
                 <div className="absolute bottom-0 w-3/4 h-2 bg-black/50 rounded-t-lg"></div>
               </div>
 
+              {/* KERTAS STRUK ASLI - TIDAK DIUBAH */}
               <motion.div
                 initial={{ y: "-100%", opacity: 0 }} 
                 animate={{ y: 0, opacity: 1 }} 
@@ -182,21 +184,21 @@ export default function Cart({ cartItems, updateCartItem, setCurrentView }: Cart
             </div>
           </div>
 
-          {/* SISI KANAN: FORM CHECKOUT */}
+          {/* SISI KANAN: FORM CHECKOUT ELEGAN */}
           <motion.form 
             initial={{ opacity: 0, x: 50 }} 
             animate={{ opacity: 1, x: 0 }} 
-            transition={{ delay: 0.5 }} 
+            transition={{ delay: 0.3, duration: 0.6, ease: "easeOut" }} 
             onSubmit={handleCheckoutWA} 
-            className="lg:col-span-7 bg-[#FAF5E9] border-4 border-[#4A3022] shadow-[12px_12px_0px_0px_#4A3022] rounded-[2rem] p-8 md:p-10 relative"
+            className="lg:col-span-7 bg-[#EFE5D5] border border-[#7A1712] shadow-[0px_4px_12px_rgba(0,0,0,0.05)] rounded-[16px] p-8 md:p-10 relative"
           >
-            <h3 className="text-3xl font-playfair font-black text-[#4A3022] mb-8 uppercase tracking-wide border-b-4 border-[#4A3022] pb-4">
-              Info Pengiriman
+            <h3 className="text-[28px] md:text-[32px] font-playfair font-semibold text-[#2A1610] mb-8 leading-tight border-b border-[#C5A059]/20 pb-4">
+              Informasi Pengiriman
             </h3>
 
             <div className="space-y-6 mb-10">
               <div className="space-y-2">
-                <label className="text-sm font-black text-[#4A3022] uppercase tracking-wider">
+                <label className="text-[12px] font-semibold text-[#2A1610]/80 uppercase tracking-widest">
                   Nama Penerima *
                 </label>
                 <input 
@@ -205,13 +207,13 @@ export default function Cart({ cartItems, updateCartItem, setCurrentView }: Cart
                   value={formData.name} 
                   onChange={handleInputChange} 
                   type="text" 
-                  placeholder="Budi Santoso"
-                  className="w-full bg-white border-4 border-[#4A3022] rounded-xl p-4 outline-none text-[#4A3022] font-bold focus:shadow-[4px_4px_0px_0px_#D97736] focus:-translate-y-1 transition-all" 
+                  placeholder="Masukkan nama lengkap..."
+                  className="w-full bg-[#FDFBF7] border border-[#C5A059]/30 rounded-[8px] p-3.5 outline-none text-[#2A1610] font-normal text-[15px] focus:border-[#C5A059] focus:ring-1 focus:ring-[#C5A059] transition-all placeholder:text-[#2A1610]/40" 
                 />
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-black text-[#4A3022] uppercase tracking-wider">
+                <label className="text-[12px] font-semibold text-[#2A1610]/80 uppercase tracking-widest">
                   Alamat Lengkap *
                 </label>
                 <textarea 
@@ -220,34 +222,32 @@ export default function Cart({ cartItems, updateCartItem, setCurrentView }: Cart
                   value={formData.address} 
                   onChange={handleInputChange} 
                   rows={3} 
-                  placeholder="Jl. Mawar No. 12..."
-                  className="w-full bg-white border-4 border-[#4A3022] rounded-xl p-4 outline-none text-[#4A3022] font-bold focus:shadow-[4px_4px_0px_0px_#D97736] focus:-translate-y-1 transition-all resize-none" 
+                  placeholder="Contoh: Jl. Mawar No. 12, Kelurahan, Kecamatan..."
+                  className="w-full bg-[#FDFBF7] border border-[#C5A059]/30 rounded-[8px] p-3.5 outline-none text-[#2A1610] font-normal text-[15px] focus:border-[#C5A059] focus:ring-1 focus:ring-[#C5A059] transition-all resize-none placeholder:text-[#2A1610]/40" 
                 />
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-black text-[#4A3022] uppercase tracking-wider">
-                  Catatan (Opsional)
+                <label className="text-[12px] font-semibold text-[#2A1610]/80 uppercase tracking-widest">
+                  Catatan Pengiriman (Opsional)
                 </label>
                 <input 
                   name="notes" 
                   value={formData.notes} 
                   onChange={handleInputChange} 
                   type="text" 
-                  placeholder="Titip di pos satpam ya."
-                  className="w-full bg-white border-4 border-[#4A3022] rounded-xl p-4 outline-none text-[#4A3022] font-bold focus:shadow-[4px_4px_0px_0px_#D97736] focus:-translate-y-1 transition-all" 
+                  placeholder="Titip di pos satpam / pagar warna hitam..."
+                  className="w-full bg-[#FDFBF7] border border-[#C5A059]/30 rounded-[8px] p-3.5 outline-none text-[#2A1610] font-normal text-[15px] focus:border-[#C5A059] focus:ring-1 focus:ring-[#C5A059] transition-all placeholder:text-[#2A1610]/40" 
                 />
               </div>
             </div>
 
-            <motion.button 
-              whileHover={{ scale: 1.02 }} 
-              whileTap={{ scale: 0.95 }} 
+            <button 
               type="submit" 
-              className="w-full bg-[#D97736] text-white py-4 rounded-xl border-4 border-[#4A3022] shadow-[6px_6px_0px_0px_#4A3022] hover:bg-[#c46a2b] font-black text-lg flex items-center justify-center gap-3 transition-colors"
+              className="w-full bg-[#7A1712] text-[#FDFBF7] py-3.5 rounded-[8px] font-bold text-[15px] flex items-center justify-center gap-3 hover:bg-[#5E120E] hover:-translate-y-[2px] transition-all duration-300 shadow-[0px_4px_12px_rgba(122,23,18,0.2)]"
             >
-              <MessageSquare size={24} /> Konfirmasi Pesanan via WA
-            </motion.button>
+              <MessageSquare size={20} strokeWidth={2} /> Konfirmasi via WhatsApp
+            </button>
           </motion.form>
 
         </div>
