@@ -1,73 +1,40 @@
-# React + TypeScript + Vite
+# 🍪 Oriena - Premium Artisan Bakery & Cookies
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Oriena adalah platform *e-katalog* dan *Content Management System (CMS)* yang dirancang khusus untuk bisnis F&B (*Bakery*). Dibangun dengan fokus pada antarmuka yang elegan, mulus, dan performa tinggi untuk memberikan pengalaman belanja kelas atas bagi pelanggan, sekaligus kemudahan manajemen inventaris bagi admin.
 
-Currently, two official plugins are available:
+![Oriena Preview](https://via.placeholder.com/1200x600.png?text=Oriena+Web+Preview) *(Ganti link ini dengan screenshot web lu nanti!)*
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## ✨ Fitur Utama
 
-## React Compiler
+### 🛍️ Untuk Pelanggan (Frontend)
+*   **Katalog Interaktif:** Tampilan *grid* menu dengan efek *hover* dan animasi *smooth* (Framer Motion).
+*   **Highlight Koleksi Unggulan:** *Auto-play carousel* untuk produk dengan label eksklusif (contoh: "BEST SELLER").
+*   **Pencarian & Filter Cerdas:** Filter berdasarkan kategori (Cookies, Bakery, Snack) dan pencarian teks *real-time*.
+*   **Direct Order:** Terintegrasi langsung dengan pemesanan partai besar via WhatsApp.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 🔐 Untuk Admin (CMS Dashboard)
+*   **Sistem Autentikasi:** Gerbang *login* yang sangat aman untuk admin.
+*   **CRUD Manajemen Etalase:** Tambah, Edit, Baca, dan Hapus menu secara *real-time*.
+*   **Upload Media Otomatis:** Mengunggah dan mengelola foto produk langsung ke *Cloud Storage*.
+*   **Keamanan Level Industri (RLS):** Database dilindungi dengan *Row Level Security* di Supabase untuk mencegah akses modifikasi dari pihak luar.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🛠️ Tech Stack
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Platform ini dibangun menggunakan teknologi modern:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+**Client-Side (Frontend):**
+*   [React 18](https://react.dev/) - UI Library
+*   [Vite](https://vitejs.dev/) - Build Tool & Bundler
+*   [Tailwind CSS](https://tailwindcss.com/) - Utility-first Styling
+*   [Framer Motion](https://www.framer.com/motion/) - Animation Library
+*   [Lucide React](https://lucide.dev/) - Beautiful Iconography
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+**Server-Side (Backend & Database):**
+*   [Supabase](https://supabase.com/) - Backend-as-a-Service (BaaS)
+*   **PostgreSQL** - Database Utama
+*   **Supabase Storage** - Image Cloud Hosting
+*   **Supabase Auth** - JWT Authentication
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
