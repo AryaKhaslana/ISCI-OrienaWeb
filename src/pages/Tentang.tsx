@@ -413,7 +413,7 @@ export default function Tentang() {
               <p className="text-[#2A1610]/60 font-jakarta font-medium uppercase text-[12px] tracking-widest">Rating Rata-rata</p>
             </div>
             <p className="text-[#2A1610]/80 font-jakarta font-normal text-center mb-8 text-[14px] leading-[1.6]">
-              Perumahan Taman Pondok Jati Raya Jl. Taman Pd. Jati No.2, Geluran, Kec. Taman, Kabupaten Sidoarjo.
+              16/04 no, Jl. Tanjungsari No.4B, Penambangan, Krembangan, Kec. Taman, Kabupaten Sidoarjo, Jawa Timur 61257
             </p>
             <a 
               href="https://maps.app.goo.gl/oXTKd8x8dncXZ6eV8" 
