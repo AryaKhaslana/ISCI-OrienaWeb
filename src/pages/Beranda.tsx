@@ -8,7 +8,6 @@ import {
   CakeSlice, 
   CheckCircle, 
   MessageSquare,
-  Package,
   Quote,
   Star
 } from 'lucide-react';
@@ -122,9 +121,6 @@ export default function Beranda({ setCurrentView, setCartCount, addToCart }: Ber
             <button onClick={() => setCurrentView('katalog')} className="bg-[#7A1712] text-[#FDFBF7] px-6 py-3 rounded-lg font-jakarta font-bold text-[16px] flex items-center justify-center gap-3 hover:bg-[#5E120E] hover:-translate-y-[2px] hover:shadow-[0px_4px_12px_rgba(122,23,18,0.2)] transition-all duration-300 ease-out">
               Lihat Menu Katalog
             </button>
-            <button onClick={() => setCurrentView('hampers')} className="bg-transparent border-[1.5px] border-[#7A1712] text-[#7A1712] px-6 py-3 rounded-lg font-jakarta font-bold text-[16px] flex items-center justify-center gap-3 hover:bg-[#EFE5D5] hover:-translate-y-[2px] transition-all duration-300 ease-out">
-              <Package size={20} strokeWidth={1.5} /> Rakit Hampers
-            </button>
           </motion.div>
         </div>
         <div className="w-full md:w-1/2">
@@ -177,10 +173,7 @@ export default function Beranda({ setCurrentView, setCartCount, addToCart }: Ber
       {/* SECTION: CERITA DAPUR */}
       <section className="bg-[#FDFBF7] py-[80px] overflow-hidden">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center gap-16">
-          <div className="w-full md:w-1/2 space-y-6">
-            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="inline-block px-4 py-1.5 border border-[#C5A059] text-[#C5A059] rounded-full text-[12px] font-jakarta font-medium tracking-widest uppercase">
-              Filosofi Dapur Kami
-            </motion.div>
+          <div className="w-full md:w-1/2 space-y-6"> 
             <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-[32px] md:text-[48px] font-playfair font-semibold text-[#2A1610] leading-[1.2]">
               Tanpa Pengawet.<br/><span className="italic text-[#7A1712]">Penuh Perasaan.</span>
             </motion.h2>

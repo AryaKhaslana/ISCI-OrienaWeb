@@ -1,19 +1,21 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
-  Clock, 
-  Store, 
-  MonitorPlay,  
+  Home,        // Icon 2008
+  MapPin,      // Icon 2011 / Lokasi
+  CakeSlice,   // Icon 2012
+  Store,       // Icon 2016
+  Cookie,      // Icon 2018
+  Sparkles,    // Icon 2019 / Keunggulan
+  Rocket,      // Icon 2026
   Heart,
-  Sparkles,
-  MapPin, 
   Star,
   MessageCircle,
   ExternalLink,
   Ribbon
 } from 'lucide-react';
 
-const FotoOwner = "https://github.com/user-attachments/assets/4ffc326f-5533-4676-95a6-3e90b1054554"
+const FotoOwner = "https://github.com/user-attachments/assets/4ffc326f-5533-4676-95a6-3e90b1054554";
 
 const InstagramIcon = ({ size = 24 }: { size?: number }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -30,10 +32,50 @@ const FacebookIcon = ({ size = 24 }: { size?: number }) => (
 );
 
 export default function Tentang() {
+  // DATA TIMELINE BARU SESUAI REQUEST
   const timeline = [
-    { year: "2008", title: "Resep Pertama", desc: "Mulai berjualan sebagai pengisi waktu luang.", icon: <Clock size={24} strokeWidth={1.5} /> },
-    { year: "2016", title: "Pintu Toko Terbuka", desc: "Mulai fokus dan menjadikannya pekerjaan utama.", icon: <Store size={24} strokeWidth={1.5} /> },
-    { year: "2026", title: "Rebranding Oriena", desc: "Oriena berkembang menjadi usaha yang banyak diinginkan oleh pelanggan.", icon: <MonitorPlay size={24} strokeWidth={1.5} /> }
+    { 
+      year: "2008", 
+      title: "Berawal dari Dapur Keluarga", 
+      desc: "Perjalanan kami dimulai dari membuat aneka camilan untuk keluarga. Seiring waktu, produk kami mulai dipercaya untuk memenuhi kebutuhan kantin pabrik dan dijual di pasar tradisional di Batam.", 
+      icon: <Home size={24} strokeWidth={1.5} /> 
+    },
+    { 
+      year: "2011", 
+      title: "Babak Baru di Sidoarjo", 
+      desc: "Kami melanjutkan perjalanan dengan pindah ke Sidoarjo, membawa semangat untuk terus berkembang dan menjangkau lebih banyak pelanggan.", 
+      icon: <MapPin size={24} strokeWidth={1.5} /> 
+    },
+    { 
+      year: "2012", 
+      title: "Mengembangkan Ragam Produk", 
+      desc: "Mulai memproduksi snack box, birthday cake, serta cookies Lebaran untuk melayani berbagai momen spesial pelanggan.", 
+      icon: <CakeSlice size={24} strokeWidth={1.5} /> 
+    },
+    { 
+      year: "2016", 
+      title: "Lahirnya Brand PasPastry", 
+      desc: "Resmi meluncurkan brand PasPastry sebagai identitas usaha dengan komitmen menghadirkan produk berkualitas dan bercita rasa istimewa.", 
+      icon: <Store size={24} strokeWidth={1.5} /> 
+    },
+    { 
+      year: "2018", 
+      title: "Inovasi Pastry Stick", 
+      desc: "Meluncurkan Pastry Stick, camilan renyah yang menjadi salah satu produk andalan.", 
+      icon: <Cookie size={24} strokeWidth={1.5} /> 
+    },
+    { 
+      year: "2019", 
+      title: "Hadirnya Sustik", 
+      desc: "Menambah lini produk melalui peluncuran Sustik, sebagai bagian dari inovasi untuk memenuhi selera pelanggan.", 
+      icon: <Sparkles size={24} strokeWidth={1.5} /> 
+    },
+    { 
+      year: "2026", 
+      title: "Lahirnya Oriena Cookies & Bakery", 
+      desc: "Memasuki babak baru melalui rebranding menjadi Oriena Cookies & Bakery. Transformasi ini menjadi langkah kami untuk terus bertumbuh, berinovasi, dan menghadirkan produk yang lebih berkualitas bagi setiap keluarga.", 
+      icon: <Rocket size={24} strokeWidth={1.5} /> 
+    }
   ];
 
   const socialLinks = [
@@ -42,10 +84,10 @@ export default function Tentang() {
   ];
 
   const galleryItems = [
-    { id: 1, title: "Proses Pembuatan", desc: "Adonan diolah dengan penuh ketelitian.", image: "https://github.com/user-attachments/assets/f7569899-58df-4a0b-9fd2-d4d2b4b1fbb9" },
-    { id: 2, title: "Hasil Panggangan", desc: "Matang sempurna setiap saat.", image: "https://github.com/user-attachments/assets/352c2d55-6799-4921-bddb-8e631567fd1e" },
-    { id: 3, title: "Kualitas Adonan", desc: "Bahan premium pilihan khas Oriena.", image: "https://github.com/user-attachments/assets/fbfa90cc-0861-4129-90b0-bbd0dbfbd927" },
-    { id: 4, title: "Siap Disajikan", desc: "Fresh from the oven untuk keluarga Anda.", image: "https://github.com/user-attachments/assets/805b9772-0a3e-4f75-812c-118f70d4f00c" },
+    { id: 1, image: "https://github.com/user-attachments/assets/f7569899-58df-4a0b-9fd2-d4d2b4b1fbb9" },
+    { id: 2, image: "https://github.com/user-attachments/assets/352c2d55-6799-4921-bddb-8e631567fd1e" },
+    { id: 3, image: "https://github.com/user-attachments/assets/fbfa90cc-0861-4129-90b0-bbd0dbfbd927" },
+    { id: 4, image: "https://github.com/user-attachments/assets/805b9772-0a3e-4f75-812c-118f70d4f00c" },
   ];
 
   const customerReviews = [
@@ -70,7 +112,7 @@ export default function Tentang() {
     >
       
       {/* Section: Hero */}
-      <section className="max-w-4xl mx-auto px-4 text-center space-y-6 pt-16 md:pt-24 mb-24">
+      <section className="max-w-4xl mx-auto px-4 text-center space-y-6 pt-16 md:pt-24 mb-[80px]">
         <h1 className="text-[42px] md:text-[64px] font-playfair font-bold text-[#2A1610] tracking-[-1px] leading-[1.1] flex flex-wrap justify-center gap-x-3 md:gap-x-4 overflow-hidden">
           {titleWords.map((word, idx) => (
             <motion.span
@@ -84,6 +126,14 @@ export default function Tentang() {
             </motion.span>
           ))}
         </h1>
+        <motion.p 
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6, duration: 0.8 }}
+          className="text-[16px] md:text-[18px] font-jakarta font-normal text-[#2A1610]/80 leading-[1.6] max-w-2xl mx-auto"
+        >
+          Lebih dari sekadar bahan baku premium, Oriena adalah tentang merawat tradisi dan menciptakan momen manis di setiap gigitan.
+        </motion.p>
       </section>
 
       {/* Section: Sejarah */}
@@ -93,7 +143,7 @@ export default function Tentang() {
           whileInView={{ opacity: 1, y: 0 }} 
           viewport={{ once: true, margin: "-100px" }} 
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="bg-[#EFE5D5] shadow-[0px_4px_12px_rgba(0,0,0,0.04)] rounded-[16px] p-8 md:p-12 relative overflow-hidden"
+          className="bg-[#EFE5D5] shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-[#7A1712] rounded-[16px] p-8 md:p-12 relative overflow-hidden"
         >
           <div className="absolute top-0 right-0 w-64 h-64 bg-[#C5A059]/10 rounded-bl-full pointer-events-none"></div>
 
@@ -109,10 +159,10 @@ export default function Tentang() {
                 Oriena bermula dari sebuah dapur keluarga sederhana—berawal dari hobi membuat camilan untuk orang-orang tercinta yang kemudian berkembang menjadi impian untuk menyajikan produk berkualitas bagi lebih banyak keluarga. Perjalanan panjang ini dimulai dengan nama PasPastry "Lezatnya Pas", hingga kini kami resmi bertransformasi dan melangkah lebih jauh sebagai Oriena Cookies & Bakery.
               </p>
               <p className="text-[#2A1610]/80 font-jakarta font-normal text-[16px] leading-[1.6]">
-                Dengan membawa semangat baru melalui tagline "Setiap Rasa Punya Cerita", kami meyakini bahwa setiap sajian kami bukan sekadar tentang cita rasa, melainkan ikut menjadi bagian dari momen-momen berharga Pelanggan kami. Perjalanan ini tidak akan berarti tanpa dukungan para pelanggan, sahabat, dan keluarga yang terus mempercayai serta mendukung kami hingga hari ini, Kepercayaan Anda adalah semangat kami untuk terus berinovasi dan menghadirkan produk terbaik.
+                Dengan membawa semangat baru melalui tagline "Setiap Rasa Punya Cerita", kami meyakini bahwa setiap sajian kami bukan sekadar tentang cita rasa, melainkan ikut menjadi bagian dari momen-momen berharga Pelanggan kami. Perjalanan ini tidak akan berarti tanpa dukungan para pelanggan, sahabat, dan keluarga yang terus mempercayai serta mendukung kami hingga hari ini.
               </p>
               <p className="text-[#2A1610]/80 font-jakarta font-normal text-[16px] leading-[1.6]">
-                Salam hangat dari kami, <br /> <span className="italic font-bold">Oriena Cookies & Bakery.</span>
+                Salam hangat dari kami, <br /> <span className="italic font-bold text-[#7A1712]">Oriena Cookies & Bakery.</span>
               </p>
             </div>
           </div>
@@ -126,9 +176,9 @@ export default function Tentang() {
           whileInView={{ opacity: 1, y: 0 }} 
           viewport={{ once: true, margin: "-100px" }} 
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="bg-[#FDFBF7] rounded-[16px] p-8 md:p-12 border border-[#7A1712] shadow-[0px_4px_12px_rgba(0,0,0,0.03)] flex flex-col md:flex-row items-center gap-12"
+          className="bg-[#EFE5D5] rounded-[16px] p-8 md:p-12 border border-[#7A1712] shadow-[0px_4px_12px_rgba(0,0,0,0.05)] flex flex-col md:flex-row items-center gap-12"
         >
-         <div className="bg-[#EFE5D5] rounded-[16px] p-4 shadow-sm relative group w-full md:w-2/5">
+         <div className="bg-[#FDFBF7] border border-[#7A1712]/20 rounded-[16px] p-4 shadow-sm relative group w-full md:w-2/5">
           <div className="aspect-[4/5] rounded-[8px] overflow-hidden relative flex items-center justify-center">
             <img 
               src={FotoOwner} 
@@ -143,6 +193,15 @@ export default function Tentang() {
           </div>
         </div>
           <div className="w-full md:w-3/5 text-center md:text-left space-y-6">
+            <motion.div 
+              initial={{ opacity: 0, x: 20 }} 
+              whileInView={{ opacity: 1, x: 0 }} 
+              viewport={{ once: true }} 
+              className="inline-block px-4 py-1.5 border border-[#7A1712] text-[#7A1712] rounded-full text-[12px] font-jakarta font-bold tracking-widest uppercase"
+            >
+              SOSOK DI BALIK DAPUR
+            </motion.div>
+            
             <motion.div 
               initial={{ opacity: 0, x: 20 }} 
               whileInView={{ opacity: 1, x: 0 }} 
@@ -167,9 +226,9 @@ export default function Tentang() {
               whileInView={{ opacity: 1, x: 0 }} 
               viewport={{ once: true }} 
               transition={{ delay: 0.2 }}
-              className="text-[#2A1610]/80 leading-[1.6] font-jakarta font-normal text-[14px] relative py-4 italic"
+              className="text-[#2A1610]/80 leading-[1.6] font-jakarta font-normal text-[14px] relative py-4"
             >
-              <span className="italic font-bold">— Endah Puji Astuti</span> <br />Founder Oriena Cookies & Bakery
+              <span className="italic font-bold text-[#7A1712]">— Endah Puji Astuti</span> <br />Founder Oriena Cookies & Bakery
             </motion.p>
 
             <motion.div 
@@ -185,7 +244,7 @@ export default function Tentang() {
                   href={social.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-12 h-12 rounded-[8px] bg-[#EFE5D5] flex items-center justify-center text-[#7A1712] hover:bg-[#7A1712] hover:text-[#FDFBF7] hover:-translate-y-[2px] transition-all duration-300 shadow-sm"
+                  className="w-12 h-12 rounded-[8px] bg-[#FDFBF7] border border-[#7A1712]/20 flex items-center justify-center text-[#7A1712] hover:bg-[#7A1712] hover:text-[#FDFBF7] hover:-translate-y-[2px] transition-all duration-300 shadow-sm"
                 >
                   <social.icon size={20} />
                 </motion.a>
@@ -226,13 +285,13 @@ export default function Tentang() {
                 hidden: { opacity: 0, y: 30 }, 
                 visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } } 
               }}
-              className="bg-[#FDFBF7] p-8 md:p-10 rounded-[16px] shadow-[0px_4px_12px_rgba(0,0,0,0.03)] border border-[#EFE5D5] text-center hover:-translate-y-[2px] transition-all duration-300"
+              className="bg-[#EFE5D5] p-8 md:p-10 rounded-[16px] shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-[#7A1712] text-center hover:-translate-y-[2px] transition-all duration-300"
             >
-              <div className="w-16 h-16 bg-[#EFE5D5] text-[#7A1712] rounded-full flex items-center justify-center mx-auto mb-6">
+              <div className="w-16 h-16 bg-[#FDFBF7] text-[#7A1712] border border-[#7A1712]/20 rounded-full flex items-center justify-center mx-auto mb-6">
                 {item.icon}
               </div>
               <h3 className="text-[20px] font-playfair font-semibold text-[#2A1610] mb-3">{item.title}</h3>
-              <p className="text-[#2A1610]/70 font-jakarta font-normal text-[15px] leading-[1.6]">{item.desc}</p>
+              <p className="text-[#2A1610]/80 font-jakarta font-normal text-[15px] leading-[1.6]">{item.desc}</p>
             </motion.div>
           ))}
         </motion.div>
@@ -253,7 +312,7 @@ export default function Tentang() {
 
         <div className="relative space-y-12 md:space-y-16 py-8">
           {/* Garis Tengah */}
-          <div className="absolute top-0 bottom-0 left-[39px] md:left-1/2 w-px bg-[#C5A059]/30 md:-translate-x-1/2 z-0"></div>
+          <div className="absolute top-0 bottom-0 left-[39px] md:left-1/2 w-px bg-[#7A1712]/30 md:-translate-x-1/2 z-0"></div>
 
           {timeline.map((item, idx) => (
             <motion.div 
@@ -269,20 +328,24 @@ export default function Tentang() {
                 whileInView={{ scale: 1 }} 
                 viewport={{ once: true }} 
                 transition={{ delay: 0.2, type: "spring" }}
-                className="absolute left-[16px] md:left-1/2 md:-translate-x-1/2 w-[48px] h-[48px] bg-[#FDFBF7] border border-[#C5A059] rounded-full flex items-center justify-center text-[#7A1712] shadow-sm z-10"
+                className="absolute left-[16px] md:left-1/2 md:-translate-x-1/2 w-[48px] h-[48px] bg-[#EFE5D5] border border-[#7A1712] rounded-full flex items-center justify-center text-[#7A1712] shadow-sm z-10"
               >
                 {item.icon}
               </motion.div>
 
               <div className="hidden md:block md:w-1/2"></div>
 
-              <div className={`pl-24 md:pl-0 w-full md:w-1/2 ${idx % 2 === 0 ? 'md:pr-16 md:text-right' : 'md:pl-16'}`}>
-                <div className="bg-[#FDFBF7] p-8 rounded-[16px] shadow-[0px_4px_12px_rgba(0,0,0,0.03)] border border-[#EFE5D5] hover:-translate-y-[2px] transition-all duration-300">
-                  <div className={`text-[#C5A059] font-jakarta font-bold text-[14px] mb-2 ${idx % 2 === 0 ? 'md:justify-end' : ''}`}>
+              {/* md:text-right DIHAPUS DARI SINI BIAR SEMUA RATA KIRI */}
+              <div className={`pl-24 md:pl-0 w-full md:w-1/2 ${idx % 2 === 0 ? 'md:pr-16' : 'md:pl-16'}`}>
+                <div className="bg-[#EFE5D5] p-8 rounded-[16px] shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-[#7A1712] hover:-translate-y-[2px] transition-all duration-300 text-left">
+                  
+                  {/* LOGIKA PERATAAN TAHUN DIHAPUS, JADI DEFAULT RATA KIRI */}
+                  <div className="text-[#7A1712] font-jakarta font-bold text-[14px] mb-2">
                     {item.year}
                   </div>
+                  
                   <h3 className="text-[20px] font-playfair font-semibold text-[#2A1610] mb-2">{item.title}</h3>
-                  <p className="text-[#2A1610]/70 font-jakarta font-normal text-[15px] leading-[1.6]">{item.desc}</p>
+                  <p className="text-[#2A1610]/80 font-jakarta font-normal text-[15px] leading-[1.6]">{item.desc}</p>
                 </div>
               </div>
             </motion.div>
@@ -291,141 +354,137 @@ export default function Tentang() {
       </section>
 
       {/* SECTION: LOKASI & REVIEW GOOGLE MAPS */}
-      <section className="bg-[#EFE5D5] py-[80px]">
-        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
-          
-          <div className="text-center mb-16">
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }} 
-              whileInView={{ opacity: 1, y: 0 }} 
-              viewport={{ once: true }} 
-              className="inline-flex items-center gap-2 px-4 py-1.5 border border-[#C5A059] text-[#C5A059] rounded-full text-[12px] font-jakarta font-medium tracking-widest uppercase mb-4"
-            >
-              <MapPin size={14} /> Titik Temu Rasa
-            </motion.div>
-            <motion.h2 
-              initial={{ opacity: 0, y: 20 }} 
-              whileInView={{ opacity: 1, y: 0 }} 
-              viewport={{ once: true }} 
-              className="text-[32px] md:text-[48px] font-playfair font-semibold text-[#2A1610]"
-            >
-              Kata Mereka Tentang Oriena
-            </motion.h2>
-          </div>
+      <section className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 mb-[80px]">
+        <div className="text-center mb-16">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }} 
+            whileInView={{ opacity: 1, y: 0 }} 
+            viewport={{ once: true }} 
+            className="inline-flex items-center gap-2 px-4 py-1.5 border border-[#7A1712] text-[#7A1712] rounded-full text-[12px] font-jakarta font-bold tracking-widest uppercase mb-4"
+          >
+            <MapPin size={14} /> Titik Temu Rasa
+          </motion.div>
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }} 
+            whileInView={{ opacity: 1, y: 0 }} 
+            viewport={{ once: true }} 
+            className="text-[32px] md:text-[48px] font-playfair font-semibold text-[#2A1610]"
+          >
+            Kata Mereka Tentang Oriena
+          </motion.h2>
+        </div>
 
-          {/* Wrapper Google Maps Iframe */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 items-center mb-16">
-            <motion.div 
-              initial={{ opacity: 0, y: 30 }} 
-              whileInView={{ opacity: 1, y: 0 }} 
-              viewport={{ once: true }} 
-              className="lg:col-span-2 w-full h-[350px] rounded-[16px] shadow-[0px_4px_12px_rgba(0,0,0,0.05)] overflow-hidden relative bg-[#FDFBF7]"
-            >
-              <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.017414012944!2d112.66942945323046!3d-7.351940355189639!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7e32ad651b145%3A0xa215afe6733ecf47!2sORIENA%20(PasPastry)!5e0!3m2!1sid!2sid!4v1782451929338!5m2!1sid!2sid" 
-                width="100%" 
-                height="100%" 
-                style={{ border: 0 }} 
-                allowFullScreen={false} 
-                loading="lazy" 
-                referrerPolicy="strict-origin-when-cross-origin"
-                className="absolute inset-0 opacity-80 hover:opacity-100 transition-opacity duration-500"
-              ></iframe>
-            </motion.div>
+        {/* Wrapper Google Maps Iframe */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 items-center mb-16">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }} 
+            whileInView={{ opacity: 1, y: 0 }} 
+            viewport={{ once: true }} 
+            className="lg:col-span-2 w-full h-[350px] rounded-[16px] shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-[#7A1712] overflow-hidden relative bg-[#EFE5D5]"
+          >
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.017414012944!2d112.66942945323046!3d-7.351940355189639!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7e32ad651b145%3A0xa215afe6733ecf47!2sORIENA%20(PasPastry)!5e0!3m2!1sid!2sid!4v1782451929338!5m2!1sid!2sid" 
+              width="100%" 
+              height="100%" 
+              style={{ border: 0 }} 
+              allowFullScreen={false} 
+              loading="lazy" 
+              referrerPolicy="strict-origin-when-cross-origin"
+              className="absolute inset-0 opacity-90 hover:opacity-100 transition-opacity duration-500"
+            ></iframe>
+          </motion.div>
 
-            <motion.div 
-              initial={{ opacity: 0, y: 30 }} 
-              whileInView={{ opacity: 1, y: 0 }} 
-              viewport={{ once: true }} 
-              transition={{ delay: 0.1 }}
-              className="lg:col-span-1 bg-[#FDFBF7] p-8 rounded-[16px] shadow-[0px_4px_12px_rgba(0,0,0,0.05)] h-full flex flex-col justify-center border border-[#EFE5D5]"
-            >
-              <div className="text-center mb-6">
-                <h3 className="text-[56px] font-playfair font-semibold text-[#2A1610] leading-none mb-2">4.8</h3>
-                <div className="flex justify-center gap-1 text-[#C5A059] mb-2">
-                  <Star fill="currentColor" size={20} />
-                  <Star fill="currentColor" size={20} />
-                  <Star fill="currentColor" size={20} />
-                  <Star fill="currentColor" size={20} />
-                  <Star fill="currentColor" size={20} />
-                </div>
-                <p className="text-[#2A1610]/60 font-jakarta font-medium uppercase text-[12px] tracking-widest">Rating Rata-rata</p>
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }} 
+            whileInView={{ opacity: 1, y: 0 }} 
+            viewport={{ once: true }} 
+            transition={{ delay: 0.1 }}
+            className="lg:col-span-1 bg-[#EFE5D5] p-8 rounded-[16px] shadow-[0px_4px_12px_rgba(0,0,0,0.05)] h-full flex flex-col justify-center border border-[#7A1712]"
+          >
+            <div className="text-center mb-6">
+              <h3 className="text-[56px] font-playfair font-semibold text-[#2A1610] leading-none mb-2">4.8</h3>
+              <div className="flex justify-center gap-1 text-[#C5A059] mb-2">
+                <Star fill="currentColor" size={20} />
+                <Star fill="currentColor" size={20} />
+                <Star fill="currentColor" size={20} />
+                <Star fill="currentColor" size={20} />
+                <Star fill="currentColor" size={20} />
               </div>
-              <p className="text-[#2A1610]/80 font-jakarta font-normal text-center mb-8 text-[14px] leading-[1.6]">
-                Perumahan Taman Pondok Jati Raya Jl. Taman Pd. Jati No.2, Geluran, Kec. Taman, Kabupaten Sidoarjo.
-              </p>
-              <a 
-                href="https://maps.app.goo.gl/oXTKd8x8dncXZ6eV8" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="bg-transparent border-[1.5px] border-[#7A1712] text-[#7A1712] w-full py-3 rounded-[8px] font-jakarta font-bold text-[14px] flex items-center justify-center gap-2 hover:bg-[#7A1712] hover:text-[#FDFBF7] transition-all duration-300 ease-out"
+              <p className="text-[#2A1610]/60 font-jakarta font-medium uppercase text-[12px] tracking-widest">Rating Rata-rata</p>
+            </div>
+            <p className="text-[#2A1610]/80 font-jakarta font-normal text-center mb-8 text-[14px] leading-[1.6]">
+              Perumahan Taman Pondok Jati Raya Jl. Taman Pd. Jati No.2, Geluran, Kec. Taman, Kabupaten Sidoarjo.
+            </p>
+            <a 
+              href="https://maps.app.goo.gl/oXTKd8x8dncXZ6eV8" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="bg-[#7A1712] text-[#FDFBF7] w-full py-3 rounded-[8px] font-jakarta font-bold text-[14px] flex items-center justify-center gap-2 hover:bg-[#5E120E] transition-all duration-300 ease-out shadow-[0px_4px_12px_rgba(122,23,18,0.2)]"
+            >
+              <MapPin size={18} /> Buka di Maps
+            </a>
+          </motion.div>
+        </div>
+
+        {/* Wrapper Reviews Berjejer */}
+        <div>
+          <div className="flex justify-between items-end mb-6">
+            <h3 className="font-jakarta font-medium text-[#2A1610]/60 uppercase tracking-widest text-[12px] flex items-center gap-2">
+              <MessageCircle size={16} className="text-[#7A1712]" /> Sorotan Ulasan Pelanggan
+            </h3>
+          </div>
+          
+          <div className="flex gap-6 overflow-x-auto pb-8 pt-2 hide-scrollbar snap-x">
+            {customerReviews.map((review) => (
+              <div 
+                key={review.id} 
+                className="min-w-[280px] md:min-w-[320px] bg-[#EFE5D5] shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-[#7A1712] rounded-[16px] p-6 snap-start flex flex-col hover:-translate-y-[2px] transition-transform duration-300"
               >
-                <MapPin size={18} /> Buka di Maps
-              </a>
-            </motion.div>
-          </div>
-
-          {/* Wrapper Reviews Berjejer */}
-          <div>
-            <div className="flex justify-between items-end mb-6">
-              <h3 className="font-jakarta font-medium text-[#2A1610]/60 uppercase tracking-widest text-[12px] flex items-center gap-2">
-                <MessageCircle size={16} className="text-[#C5A059]" /> Sorotan Ulasan Pelanggan
-              </h3>
-            </div>
-            
-            <div className="flex gap-6 overflow-x-auto pb-8 pt-2 hide-scrollbar snap-x">
-              {customerReviews.map((review) => (
-                <div 
-                  key={review.id} 
-                  className="min-w-[280px] md:min-w-[320px] bg-[#FDFBF7] shadow-[0px_4px_12px_rgba(0,0,0,0.04)] border border-[#EFE5D5] rounded-[16px] p-6 snap-start flex flex-col hover:-translate-y-[2px] transition-transform duration-300"
-                >
-                  <div className="flex justify-between items-start mb-4">
-                    <div>
-                      <h4 className="font-playfair font-semibold text-[#2A1610] text-[18px]">{review.name}</h4>
-                      <p className="font-jakarta font-normal text-[12px] text-[#2A1610]/50">{review.time}</p>
-                    </div>
-                    <div className="flex gap-0.5 text-[#C5A059]">
-                      {[...Array(review.rating)].map((_, i) => (
-                        <Star key={i} fill="currentColor" size={14} />
-                      ))}
-                    </div>
+                <div className="flex justify-between items-start mb-4">
+                  <div>
+                    <h4 className="font-playfair font-semibold text-[#2A1610] text-[18px]">{review.name}</h4>
+                    <p className="font-jakarta font-normal text-[12px] text-[#2A1610]/60">{review.time}</p>
                   </div>
-                  <p className="font-jakarta font-normal text-[#2A1610]/80 text-[14px] leading-[1.6] mb-2 italic flex-grow">
-                    "{review.text}"
-                  </p>
+                  <div className="flex gap-0.5 text-[#C5A059]">
+                    {[...Array(review.rating)].map((_, i) => (
+                      <Star key={i} fill="currentColor" size={14} />
+                    ))}
+                  </div>
                 </div>
-              ))}
-            </div>
-
-            {/* TOMBOL REDIRECT */}
-            <div className="mt-4">
-               <a 
-                 href="https://maps.app.goo.gl/oXTKd8x8dncXZ6eV8" 
-                 target="_blank" 
-                 rel="noopener noreferrer"
-                 className="w-full bg-[#FDFBF7] border border-[#EFE5D5] rounded-[16px] p-6 flex flex-col md:flex-row items-center justify-between gap-6 hover:shadow-[0px_4px_12px_rgba(0,0,0,0.05)] hover:-translate-y-[2px] transition-all duration-300 group"
-               >
-                 <div className="flex items-center gap-4 text-left">
-                    <div className="w-12 h-12 bg-[#EFE5D5] rounded-full flex items-center justify-center text-[#C5A059]">
-                       <Star fill="currentColor" size={20} />
-                    </div>
-                    <div>
-                      <h4 className="font-playfair font-semibold text-[18px] md:text-[20px] text-[#2A1610] mb-1">Lebih dari 50+ Pelanggan Telah Membuktikan</h4>
-                      <p className="font-jakarta font-normal text-[14px] text-[#2A1610]/60">Baca seluruh ulasan jujur mereka di Google Maps.</p>
-                    </div>
-                 </div>
-                 <div className="text-[#7A1712] font-jakarta font-bold text-[14px] flex items-center gap-2 group-hover:gap-3 transition-all duration-300">
-                   Lihat Semua Ulasan <ExternalLink size={18} />
-                 </div>
-               </a>
-            </div>
+                <p className="font-jakarta font-normal text-[#2A1610]/80 text-[14px] leading-[1.6] mb-2 italic flex-grow">
+                  "{review.text}"
+                </p>
+              </div>
+            ))}
           </div>
 
+          {/* TOMBOL REDIRECT */}
+          <div className="mt-4">
+             <a 
+               href="https://maps.app.goo.gl/oXTKd8x8dncXZ6eV8" 
+               target="_blank" 
+               rel="noopener noreferrer"
+               className="w-full bg-[#EFE5D5] border border-[#7A1712] rounded-[16px] p-6 flex flex-col md:flex-row items-center justify-between gap-6 hover:shadow-[0px_4px_12px_rgba(0,0,0,0.05)] hover:-translate-y-[2px] transition-all duration-300 group"
+             >
+               <div className="flex items-center gap-4 text-left">
+                  <div className="w-12 h-12 bg-[#FDFBF7] rounded-full flex items-center justify-center text-[#C5A059] border border-[#C5A059]/20">
+                     <Star fill="currentColor" size={20} />
+                  </div>
+                  <div>
+                    <h4 className="font-playfair font-semibold text-[18px] md:text-[20px] text-[#2A1610] mb-1">Lebih dari 50+ Pelanggan Telah Membuktikan</h4>
+                    <p className="font-jakarta font-normal text-[14px] text-[#2A1610]/70">Baca seluruh ulasan jujur mereka di Google Maps.</p>
+                  </div>
+               </div>
+               <div className="text-[#FDFBF7] bg-[#7A1712] px-6 py-2.5 rounded-[8px] font-jakarta font-bold text-[14px] flex items-center gap-2 group-hover:bg-[#5E120E] transition-all duration-300 shadow-sm">
+                 Lihat Semua Ulasan <ExternalLink size={18} />
+               </div>
+             </a>
+          </div>
         </div>
       </section>
 
       {/* SECTION: GALLERY */}
-      <section className="bg-[#FDFBF7] pt-20 pb-16 overflow-hidden">
+      <section className="bg-[#FDFBF7] py-[80px] overflow-hidden">
         <div className="text-center mb-12 px-4">
           <motion.h2 
             initial={{ opacity: 0, y: 20 }} 
@@ -440,7 +499,7 @@ export default function Tentang() {
             whileInView={{ opacity: 1, y: 0 }} 
             viewport={{ once: true }} 
             transition={{ delay: 0.1 }} 
-            className="text-[12px] font-jakarta font-medium text-[#2A1610]/60 uppercase tracking-widest"
+            className="text-[12px] font-jakarta font-medium text-[#2A1610]/60 uppercase tracking-widest border border-[#2A1610]/20 inline-block px-4 py-1.5 rounded-full"
           >
             Geser atau Tahan untuk melihat
           </motion.p>
@@ -550,7 +609,7 @@ function AutoScrollGallery({ items }: { items: any[] }) {
       {displayPhotos.map((item, idx) => (
         <motion.div
           key={idx}
-          className="min-w-[280px] md:min-w-[340px] bg-[#EFE5D5] shadow-[0px_4px_12px_rgba(0,0,0,0.03)] rounded-[16px] overflow-hidden relative group flex-shrink-0 transition-transform duration-300 flex flex-col hover:-translate-y-[2px]"
+          className="min-w-[280px] md:min-w-[340px] bg-[#EFE5D5] border border-[#7A1712] shadow-[0px_4px_12px_rgba(0,0,0,0.05)] rounded-[16px] overflow-hidden relative group flex-shrink-0 transition-transform duration-300 flex flex-col hover:-translate-y-[2px]"
         >
           <div className="aspect-[4/5] overflow-hidden relative pointer-events-none">
             <img 
@@ -560,10 +619,6 @@ function AutoScrollGallery({ items }: { items: any[] }) {
             />
           </div>
           
-          <div className="p-6 bg-[#FDFBF7] flex flex-col justify-center pointer-events-none border-t border-[#EFE5D5]">
-            <h3 className="text-[20px] font-playfair font-semibold text-[#2A1610] mb-1">{item.title}</h3>
-            <p className="text-[#2A1610]/70 font-jakarta font-normal text-[14px]">{item.desc}</p>
-          </div>
         </motion.div>
       ))}
     </div>

@@ -66,7 +66,7 @@ export default function Navbar({
               
               {/* LOGO */}
               <div 
-                className="text-[28px] font-playfair font-bold tracking-tight text-[#2A1610] cursor-pointer hover:-translate-y-[2px] transition-transform duration-300"
+                className="text-[28px] font-playfair font-bold tracking-tight text-[#C5A059] cursor-pointer hover:-translate-y-[2px] transition-transform duration-300 drop-shadow-[1px_1px_0px_#2A1610] hover:drop-shadow-[1.5px_1.5px_0px_#2A1610]"
                 onClick={() => handleNavigate('beranda')}
               >
                 ORIENA.
