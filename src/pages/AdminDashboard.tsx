@@ -36,12 +36,10 @@ export default function AdminDashboard({ setCurrentView }: AdminDashboardProps) 
   const [searchTerm, setSearchTerm] = useState('');
   const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
 
-  // SATPAM KEAMANAN FRONTEND
   useEffect(() => {
     const checkAuth = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
-        // Kalau ga punya sesi (belum login), paksa balik ke halaman utama/login
         setCurrentView('beranda'); 
       }
     };
@@ -265,7 +263,11 @@ export default function AdminDashboard({ setCurrentView }: AdminDashboardProps) 
           </div>
 
           {loading && products.length === 0 ? (
-            <div className="text-center py-16 font-medium text-[#A86360] animate-pulse">Menarik data dari server...</div>
+            // GANTI LOADING JADI ELEGAN BUAT FATIH
+            <div className="flex flex-col items-center justify-center py-20 text-[#C5A059]">
+               <Cookie size={48} className="animate-spin mb-4" strokeWidth={1.5} />
+               <p className="font-medium text-[#A86360] animate-pulse">Menyiapkan etalase dari server...</p>
+            </div>
           ) : (
             <div className="overflow-x-auto custom-scrollbar">
               <table className="w-full text-left border-collapse min-w-[600px]">

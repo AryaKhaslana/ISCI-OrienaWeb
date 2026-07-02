@@ -33,10 +33,8 @@ export default function AdminLogin({ setCurrentView }: { setCurrentView: React.D
       initial={{ opacity: 0 }} 
       animate={{ opacity: 1 }} 
       exit={{ opacity: 0 }} 
-      // Menggunakan Vanilla Cream sebagai background utama
       className="min-h-[80vh] flex items-center justify-center bg-[#FDFBF7] p-4 font-jakarta"
     >
-      {/* Menggunakan border tipis 1.5px dan shadow sangat halus */}
       <div className="w-full max-w-md bg-white border-[1.5px] border-[#2A1610]/10 rounded-[16px] p-8 shadow-[0px_8px_24px_rgba(42,22,16,0.04)]">
         <div className="text-center mb-8">
           <div className="w-16 h-16 bg-[#FDFBF7] text-[#C5A059] rounded-[16px] flex items-center justify-center mx-auto mb-4 border-[1.5px] border-[#C5A059]/30">
@@ -86,7 +84,6 @@ export default function AdminLogin({ setCurrentView }: { setCurrentView: React.D
           <button 
             type="submit" 
             disabled={loading}
-            // Menggunakan Deep Crimson sesuai panduan Button CTA
             className="w-full bg-[#7A1712] text-[#FDFBF7] font-bold py-3.5 rounded-[8px] hover:bg-[#5E120E] hover:-translate-y-0.5 shadow-[0px_4px_12px_rgba(122,23,18,0.2)] transition-all flex justify-center items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
           >
             {loading ? 'Memverifikasi...' : <>Masuk Sekarang <ArrowRight size={18} /></>}
