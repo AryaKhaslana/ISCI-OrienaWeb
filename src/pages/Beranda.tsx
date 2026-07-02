@@ -8,8 +8,12 @@ import {
   CakeSlice, 
   CheckCircle, 
   MessageSquare,
-  Quote,
-  Star
+  Star,
+  Flame,
+  Award,
+  Gift,     
+  Heart,
+  Tag
 } from 'lucide-react';
 
 interface BerandaProps {
@@ -110,12 +114,12 @@ export default function Beranda({ setCurrentView, setCartCount, addToCart }: Ber
       <section className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-24 flex flex-col-reverse md:flex-row items-center gap-12 min-h-[85vh]">
         <div className="w-full md:w-1/2 space-y-8">
           <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="text-[42px] md:text-[64px] font-playfair font-bold leading-[1.1] tracking-[-1px] text-[#2A1610]">
-            Bawa Hangatnya <br/>
-            <span className="text-[#7A1712] italic">Oven Kami</span> <br/>
-            ke Meja Anda.
+            Bukan sekedar  <br/>
+            <span className="text-[#7A1712] italic">Kue, Ada cerita</span> <br/>
+            di setiap rasa
           </motion.h1>
           <motion.p initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }} className="text-[16px] md:text-[18px] font-jakarta font-normal text-[#2A1610]/80 leading-[1.6] max-w-lg">
-            Nastar lumer, kastengel garing, dan berbagai kreasi pastry yang dibuat dengan tangan untuk menyempurnakan momen Anda bersama keluarga tercinta.
+            Oriena menghadirkan cookies, Bakery,  Pastry dan aneka snack yang dibuat dari bahan pilihan dengan rasa yang selalu dirindukan
           </motion.p>
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.4 }} className="flex flex-col sm:flex-row gap-4 pt-4">
             <button onClick={() => setCurrentView('katalog')} className="bg-[#7A1712] text-[#FDFBF7] px-6 py-3 rounded-lg font-jakarta font-bold text-[16px] flex items-center justify-center gap-3 hover:bg-[#5E120E] hover:-translate-y-[2px] hover:shadow-[0px_4px_12px_rgba(122,23,18,0.2)] transition-all duration-300 ease-out">
@@ -170,25 +174,58 @@ export default function Beranda({ setCurrentView, setCartCount, addToCart }: Ber
         </div>
       </section>
 
-      {/* SECTION: CERITA DAPUR */}
+{/* SECTION: CERITA DAPUR (Kenapa Memilih Oriena?) */}
       <section className="bg-[#FDFBF7] py-[80px] overflow-hidden">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center gap-16">
-          <div className="w-full md:w-1/2 space-y-6"> 
-            <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-[32px] md:text-[48px] font-playfair font-semibold text-[#2A1610] leading-[1.2]">
-              Tanpa Pengawet.<br/><span className="italic text-[#7A1712]">Penuh Perasaan.</span>
-            </motion.h2>
-            <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="text-[#2A1610]/80 font-jakarta font-normal text-[16px] leading-[1.6] max-w-md">
-              Kami percaya bahwa rasa terbaik datang dari bahan yang jujur. Mentega pilihan, keju asli, dan proses panggangan artisan yang dijaga suhunya secara presisi untuk menghadirkan kualitas premium di setiap toples.
-            </motion.p>
+          <div className="w-full md:w-1/2 space-y-8"> 
+            <div>
+              <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-[32px] md:text-[48px] font-playfair font-semibold text-[#2A1610] leading-[1.2]">
+                Kenapa Memilih <br/><span className="italic text-[#7A1712]">Oriena?</span>
+              </motion.h2>
+            </div>
+            
+            {/* Editorial Icon Grid */}
+            <motion.div 
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
+              className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-8 pt-2"
+            >
+              {[
+                { text: "Dibuat Fresh Setiap Hari", icon: <Flame size={20} strokeWidth={1.5} /> },
+                { text: "Bahan Pilihan Berkualitas", icon: <Award size={20} strokeWidth={1.5} /> },
+                { text: "Cocok untuk Hampers", icon: <Gift size={20} strokeWidth={1.5} /> },
+                { text: "Teman Ngopi Favorit", icon: <Coffee size={20} strokeWidth={1.5} /> },
+                { text: "Dipercaya Sejak 2008", icon: <Heart size={20} strokeWidth={1.5} /> },
+                { text: "Harga Ramah di Kantong", icon: <Tag size={20} strokeWidth={1.5} /> }
+              ].map((item, idx) => (
+                <motion.div 
+                  key={idx} 
+                  variants={{
+                    hidden: { opacity: 0, y: 20 },
+                    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+                  }}
+                  className="flex items-center gap-4 group cursor-default"
+                >
+                  <div className="w-12 h-12 rounded-full bg-[#EFE5D5] border border-[#C5A059]/20 text-[#7A1712] flex items-center justify-center shrink-0 shadow-[0px_4px_12px_rgba(0,0,0,0.03)] group-hover:bg-[#7A1712] group-hover:text-[#FDFBF7] group-hover:-translate-y-1 transition-all duration-300">
+                    {item.icon}
+                  </div>
+                  <span className="font-jakarta font-semibold text-[#2A1610]/80 text-[15px] leading-snug">
+                    {item.text}
+                  </span>
+                </motion.div>
+              ))}
+            </motion.div>
           </div>
           
+          {/* Gambar Parallax (Tidak Diubah) */}
           <div className="w-full md:w-1/2 grid grid-cols-2 gap-6 relative">
             <motion.div style={{ y: yParallax1 }} className="pt-12">
               <div className="bg-[#EFE5D5] rounded-[16px] overflow-hidden shadow-[0px_8px_24px_rgba(42,22,16,0.04)] hover:-translate-y-[2px] group transition-all duration-500">
                 <div className="aspect-[3/4] w-full overflow-hidden relative">
                   <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#2A1610]/70 z-10 opacity-60"></div>
-                  <img src="https://i.pinimg.com/1200x/8b/ca/86/8bca86af3169e15ef1dcb7a5ffd150b6.jpg" alt="Premium Butter" className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-[0.5s] ease-out" />
-                  <p className="absolute bottom-4 left-4 z-20 font-jakarta font-medium text-[#FDFBF7] tracking-wider text-[12px] uppercase">Premium Butter</p>
+                  <img src="https://github.com/user-attachments/assets/871240f8-b7de-4646-8817-dc0cf6e059c0" alt="Premium Butter" className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-[0.5s] ease-out" />
                 </div>
               </div>
             </motion.div>
@@ -197,8 +234,7 @@ export default function Beranda({ setCurrentView, setCartCount, addToCart }: Ber
               <div className="bg-[#EFE5D5] rounded-[16px] overflow-hidden shadow-[0px_8px_24px_rgba(42,22,16,0.04)] hover:-translate-y-[2px] group transition-all duration-500">
                 <div className="aspect-[3/4] w-full overflow-hidden relative">
                   <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#2A1610]/70 z-10 opacity-60"></div>
-                  <img src="https://i.pinimg.com/736x/06/a5/25/06a525f631c5e2d058b06c15228eb296.jpg" alt="Keju Edam Asli" className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-[0.5s] ease-out" />
-                  <p className="absolute bottom-4 left-4 z-20 font-jakarta font-medium text-[#C5A059] tracking-wider text-[12px] uppercase">Keju Edam Asli</p>
+                  <img src="https://github.com/user-attachments/assets/0712fbe7-ef68-4985-88b4-37a035dc993d" alt="Keju Edam Asli" className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-[0.5s] ease-out" />
                 </div>
               </div>
             </motion.div>
@@ -206,38 +242,55 @@ export default function Beranda({ setCurrentView, setCartCount, addToCart }: Ber
         </div>
       </section>
 
-      {/* SECTION: TESTIMONIAL */}
+      {/* SECTION: TESTIMONIAL (Scroll Horizontal) */}
       <section className="bg-[#EFE5D5] py-[80px]">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-            <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-[32px] md:text-[48px] font-playfair font-semibold text-[#2A1610]">
-              Manisnya Kata Mereka.
-            </motion.h2>
+            <div>
+              <h2 className="text-[32px] md:text-[48px] font-playfair font-semibold text-[#2A1610] mb-2">
+                Manisnya Kata Mereka.
+              </h2>
+              <p className="text-[14px] font-jakarta text-[#2A1610]/70 uppercase tracking-widest">
+                Geser untuk melihat semua ulasan
+              </p>
+            </div>
             <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="flex gap-1">
               {[1, 2, 3, 4, 5].map((i) => (<Star key={i} size={24} className="text-[#C5A059] fill-[#C5A059]" />))}
             </motion.div>
           </div>
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={{ visible: { transition: { staggerChildren: 0.1 } } }} className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          
+          <div className="flex gap-6 overflow-x-auto pb-8 pt-4 hide-scrollbar snap-x">
             {[
-              { name: "Siska P.", role: "Pecinta Kastengel", text: "Gila sih, beneran lumer banget di mulut! Kejunya berasa banget gak pelit, beda dari yang ada di pasaran." },
-              { name: "Bapak Tono", role: "Corporate Client", text: "Pesanan hampers 50 box aman. Packaging sangat elegan, klien dan bos pada suka semua. Sukses terus Oriena!" },
-              { name: "Dina M.", role: "Customer Setia", text: "Nastarnya the best! Selainya kerasa buatan rumah banget, manis asamnya pas, nggak bikin enek sama sekali." }
-            ].map((review, idx) => (
-              <motion.div key={idx} variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6 } } }} className="bg-[#FDFBF7] p-8 rounded-[16px] shadow-[0px_4px_12px_rgba(0,0,0,0.05)] flex flex-col justify-between hover:-translate-y-[2px] transition-transform duration-300">
-                <div>
-                  <Quote size={32} className="text-[#C5A059]/40 mb-4" strokeWidth={2} />
-                  <p className="text-[#2A1610]/80 font-jakarta font-normal text-[16px] mb-8 leading-[1.6]">"{review.text}"</p>
-                </div>
-                <div className="flex items-center gap-4 pt-6 border-t border-[#EFE5D5]">
-                  <div className="w-10 h-10 bg-[#EFE5D5] text-[#7A1712] rounded-full flex items-center justify-center font-playfair font-bold text-lg">{review.name.charAt(0)}</div>
+              { id: 1, name: "Rina Sari", text: "Kuenya enak banget, nastarnya lumer di mulut. Selalu repeat order tiap mau lebaran!", rating: 5, time: "2 bulan lalu" },
+              { id: 2, name: "Budi Santoso", text: "Langganan dari jaman namanya masih Paspastry. Kastengelnya juara tebel kejunya.", rating: 5, time: "3 bulan lalu" },
+              { id: 3, name: "Siti Aisyah", text: "Harganya terjangkau tapi rasanya premium. Cocok banget buat hampers atau ngemil sendiri.", rating: 5, time: "1 minggu lalu" },
+              { id: 4, name: "Andi Wijaya", text: "Brownies kepingnya nagih, ga bisa berhenti ngunyah. Packaging juga aman banget.", rating: 5, time: "1 bulan lalu" },
+              { id: 5, name: "Sarah Jessica", text: "Adminnya ramah, pengiriman aman sampai Jakarta. Kuenya utuh ga ada yang hancur.", rating: 5, time: "4 bulan lalu" },
+              { id: 6, name: "Joko Susilo", text: "Roti sisirnya lembut banget, menteganya wangi. Cocok buat temen ngopi pagi.", rating: 5, time: "2 minggu lalu" },
+              { id: 7, name: "Ayu Lestari", text: "Sagu kejunya beneran ngeprul. Terbaik di Sidoarjo pokoknya!", rating: 5, time: "5 bulan lalu" },
+              { id: 8, name: "Dedi Setiawan", text: "Selalu pesen di sini tiap ada acara keluarga, ga pernah mengecewakan. Tamu pada suka.", rating: 5, time: "1 bulan lalu" }
+            ].map((review) => (
+              <motion.div 
+                key={review.id} 
+                className="min-w-[280px] md:min-w-[320px] bg-[#FDFBF7] shadow-[0px_4px_12px_rgba(0,0,0,0.05)] border border-[#EFE5D5] rounded-[16px] p-6 snap-start flex flex-col hover:-translate-y-[2px] transition-transform duration-300"
+              >
+                <div className="flex justify-between items-start mb-4">
                   <div>
-                    <h4 className="font-semibold font-jakarta text-[#2A1610] text-[16px]">{review.name}</h4>
-                    <p className="text-[12px] font-jakarta text-[#2A1610]/60 font-medium">{review.role}</p>
+                    <h4 className="font-playfair font-semibold text-[#2A1610] text-[18px]">{review.name}</h4>
+                    <p className="font-jakarta font-normal text-[12px] text-[#2A1610]/50">{review.time}</p>
+                  </div>
+                  <div className="flex gap-0.5 text-[#C5A059]">
+                    {[...Array(review.rating)].map((_, i) => (
+                      <Star key={i} fill="currentColor" size={14} />
+                    ))}
                   </div>
                 </div>
+                <p className="font-jakarta font-normal text-[#2A1610]/80 text-[14px] leading-[1.6] mb-2 italic flex-grow">
+                  "{review.text}"
+                </p>
               </motion.div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </section>
     </motion.div>

@@ -356,14 +356,6 @@ export default function Tentang() {
       {/* SECTION: LOKASI & REVIEW GOOGLE MAPS */}
       <section className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 mb-[80px]">
         <div className="text-center mb-16">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }} 
-            whileInView={{ opacity: 1, y: 0 }} 
-            viewport={{ once: true }} 
-            className="inline-flex items-center gap-2 px-4 py-1.5 border border-[#7A1712] text-[#7A1712] rounded-full text-[12px] font-jakarta font-bold tracking-widest uppercase mb-4"
-          >
-            <MapPin size={14} /> Titik Temu Rasa
-          </motion.div>
           <motion.h2 
             initial={{ opacity: 0, y: 20 }} 
             whileInView={{ opacity: 1, y: 0 }} 
