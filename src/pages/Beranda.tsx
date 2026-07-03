@@ -132,47 +132,6 @@ export default function Beranda({ setCurrentView, setCartCount, addToCart }: Ber
         </div>
       </section>
 
-      {/* SECTION: HIGHLIGHT PRODUK */}
-      <section className="bg-[#EFE5D5] py-20 md:py-[80px]">
-        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-[32px] md:text-[48px] font-playfair font-bold text-[#2A1610] mb-4">
-              Langsung dari Oven.
-            </motion.h2>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="md:col-span-2 group relative bg-[#FDFBF7] rounded-[16px] p-8 overflow-hidden shadow-[0px_4px_12px_rgba(0,0,0,0.05)] hover:-translate-y-[2px] transition-all duration-500 cursor-pointer" onClick={() => setCurrentView('katalog')}>
-              <div className="absolute right-0 bottom-0 w-64 h-64 bg-[#EFE5D5] rounded-tl-full opacity-50 group-hover:scale-110 transition-transform duration-700 ease-out"></div>
-              <div className="relative z-10 w-full md:w-2/3 flex flex-col h-full justify-between min-h-[280px]">
-                <div className="inline-block px-3 py-1 bg-[#C5A059]/10 border border-[#C5A059]/20 text-[#C5A059] rounded-md text-[12px] font-jakarta font-medium tracking-wide uppercase mb-4 w-max">Signature Edition</div>
-                <div>
-                  <h3 className="text-[24px] md:text-[32px] font-playfair font-semibold text-[#2A1610] mb-3">Kastengel Royal</h3>
-                  <p className="text-[#2A1610]/80 font-jakarta font-normal text-[16px] leading-[1.6] mb-6">Garing di luar, keju edam yang pecah dan lumer di gigitan pertama. Dibuat dengan mentega pilihan tanpa bahan pengawet buatan.</p>
-                  <div className="flex items-center text-[#7A1712] font-jakarta font-bold text-[14px] group-hover:translate-x-2 transition-transform duration-300">Pesan Sekarang <ArrowRight size={16} className="ml-2" /></div>
-                </div>
-              </div>
-            </motion.div>
-
-            <div className="flex flex-col gap-6 md:gap-8">
-              <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="group flex-1 bg-[#7A1712] rounded-[16px] p-8 shadow-[0px_4px_12px_rgba(0,0,0,0.05)] hover:-translate-y-[2px] hover:shadow-[0px_4px_12px_rgba(122,23,18,0.2)] transition-all duration-500 cursor-pointer relative overflow-hidden" onClick={() => setCurrentView('hampers')}>
-                <div className="absolute -right-4 -bottom-4 opacity-10 text-[#FDFBF7] group-hover:scale-110 transition-transform duration-500"><CakeSlice size={100} strokeWidth={1} /></div>
-                <div className="relative z-10 flex flex-col justify-end h-full min-h-[140px]">
-                  <h3 className="text-[20px] md:text-[24px] font-playfair font-semibold text-[#FDFBF7] mb-2">Roti Sisir Klasik</h3>
-                  <p className="font-jakarta text-[14px] font-normal text-[#FDFBF7]/80">Lembut dengan mentega manis khas Oriena.</p>
-                </div>
-              </motion.div>
-
-              <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="group flex-1 bg-[#FDFBF7] rounded-[16px] p-8 shadow-[0px_4px_12px_rgba(0,0,0,0.05)] hover:-translate-y-[2px] transition-all duration-500 cursor-pointer relative overflow-hidden" onClick={() => setCurrentView('katalog')}>
-                <div className="relative z-10 flex flex-col justify-end h-full min-h-[140px]">
-                  <h3 className="text-[20px] md:text-[24px] font-playfair font-semibold text-[#2A1610] mb-2">Nastar Classic</h3>
-                  <p className="font-jakarta text-[14px] font-normal text-[#2A1610]/80">Resep rahasia keluarga sejak 2008.</p>
-                </div>
-              </motion.div>
-            </div>
-          </div>
-        </div>
-      </section>
 
 {/* SECTION: CERITA DAPUR (Kenapa Memilih Oriena?) */}
       <section className="bg-[#FDFBF7] py-[80px] overflow-hidden">

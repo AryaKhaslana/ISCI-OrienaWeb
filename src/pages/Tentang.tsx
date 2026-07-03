@@ -362,7 +362,7 @@ export default function Tentang() {
             viewport={{ once: true }} 
             className="text-[32px] md:text-[48px] font-playfair font-semibold text-[#2A1610]"
           >
-            Kata Mereka Tentang Oriena
+            Outlet Oriena
           </motion.h2>
         </div>
 
