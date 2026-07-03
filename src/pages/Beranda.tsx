@@ -225,7 +225,7 @@ export default function Beranda({ setCurrentView, setCartCount, addToCart }: Ber
               <div className="bg-[#EFE5D5] rounded-[16px] overflow-hidden shadow-[0px_8px_24px_rgba(42,22,16,0.04)] hover:-translate-y-[2px] group transition-all duration-500">
                 <div className="aspect-[3/4] w-full overflow-hidden relative">
                   <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#2A1610]/70 z-10 opacity-60"></div>
-                  <img src="https://github.com/user-attachments/assets/dc1ceaa8-2942-4b2a-a59e-005eb7baca9b" alt="Premium Butter" className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-[0.5s] ease-out" />
+                  <img src="https://github.com/user-attachments/assets/932268c1-e49b-4e8c-a8b4-8d4bdbaf65de" alt="Premium Butter" className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-[0.5s] ease-out" />
                 </div>
               </div>
             </motion.div>
