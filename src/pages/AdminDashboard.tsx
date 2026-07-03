@@ -64,6 +64,35 @@ export default function AdminDashboard({ setCurrentView }: AdminDashboardProps) 
     fetchProducts();
   }, []);
 
+  // ==========================================
+  // SAKTI: GLOBAL PASTE LISTENER (GAK PERLU KLIK KOTAK DULU!)
+  // ==========================================
+  useEffect(() => {
+    const handleGlobalPaste = (e: ClipboardEvent) => {
+      // Cuma aktif kalau popup menu lagi dibuka
+      if (!isModalOpen) return;
+
+      const items = e.clipboardData?.items;
+      if (!items) return;
+      
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].type.indexOf('image') !== -1) {
+          const file = items[i].getAsFile();
+          if (file) {
+            setImageFile(file);
+            showToast('📸 Gambar berhasil ditangkap dari clipboard!', 'success');
+            e.preventDefault();
+          }
+          break;
+        }
+      }
+    };
+
+    window.addEventListener('paste', handleGlobalPaste);
+    return () => window.removeEventListener('paste', handleGlobalPaste);
+  }, [isModalOpen]);
+  // ==========================================
+
   const handleEditClick = (product: Product) => {
     setEditingId(product.id);
     setNewName(product.name);
@@ -95,7 +124,7 @@ export default function AdminDashboard({ setCurrentView }: AdminDashboardProps) 
       let finalImageUrl = currentImage; 
 
       if (imageFile) {
-        const fileExt = imageFile.name.split('.').pop();
+        const fileExt = imageFile.type.split('/')[1] || 'png';
         const fileName = `${Date.now()}.${fileExt}`; 
         
         const { error: uploadError } = await supabase.storage
@@ -263,7 +292,6 @@ export default function AdminDashboard({ setCurrentView }: AdminDashboardProps) 
           </div>
 
           {loading && products.length === 0 ? (
-            // GANTI LOADING JADI ELEGAN BUAT FATIH
             <div className="flex flex-col items-center justify-center py-20 text-[#C5A059]">
                <Cookie size={48} className="animate-spin mb-4" strokeWidth={1.5} />
                <p className="font-medium text-[#A86360] animate-pulse">Menyiapkan etalase dari server...</p>
@@ -378,19 +406,36 @@ export default function AdminDashboard({ setCurrentView }: AdminDashboardProps) 
                       <p className="text-[11px] text-[#A86360] mt-1.5">Opsi "BEST SELLER" akan menaikkan posisi produk ke puncak katalog.</p>
                     </div>
                     
+                    {/* BAGIAN UPLOAD FOTO YANG DIROMBAK */}
                     <div>
                       <label className="text-xs font-semibold text-[#2A1610] uppercase tracking-wider">
                         {editingId ? 'Perbarui Foto (Abaikan jika tidak diubah)' : 'Unggah Foto Produk'}
                       </label>
-                      <div className="mt-1.5 relative">
+                      
+                      <div className="mt-1.5 relative flex flex-col items-center justify-center w-full min-h-[120px] border-[1.5px] border-dashed border-[#C5A059] bg-[#EFE5D5]/30 rounded-[8px] hover:bg-[#EFE5D5]/70 transition-colors cursor-pointer overflow-hidden group">
+                        
+                        {/* Input file bawaan (tetep bisa diklik manual kalau mau) */}
                         <input 
                           type="file" 
                           accept="image/*" 
-                          required={!editingId} 
                           onChange={e => setImageFile(e.target.files?.[0] || null)} 
-                          className="w-full bg-[#EFE5D5]/50 border-[1.5px] border-transparent rounded-[8px] px-3 py-2 outline-none font-medium text-[#2A1610] text-sm focus:border-[#C5A059] transition-colors file:mr-4 file:py-1.5 file:px-4 file:rounded-[6px] file:border-0 file:text-xs file:font-semibold file:bg-[#EFE5D5] file:text-[#2A1610] hover:file:bg-[#C5A059]/20" 
+                          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" 
                         />
+                        
+                        {imageFile ? (
+                          <div className="flex flex-col items-center justify-center z-0 p-3 w-full">
+                            <img src={URL.createObjectURL(imageFile)} alt="Preview" className="w-16 h-16 object-cover rounded-[6px] shadow-sm mb-2 border-[1.5px] border-[#C5A059]" />
+                            <p className="text-[10px] text-[#A86360] font-bold text-center px-2 w-full truncate">Siap di-upload: {imageFile.name}</p>
+                          </div>
+                        ) : (
+                          <div className="flex flex-col items-center justify-center z-0 p-4 text-center pointer-events-none">
+                            <Upload size={24} strokeWidth={1.5} className="text-[#C5A059] mb-2 group-hover:scale-110 transition-transform" />
+                            <p className="text-xs font-semibold text-[#2A1610]">Klik area ini atau <span className="text-[#7A1712] font-bold">CTRL+V (Paste)</span></p>
+                            <p className="text-[10px] text-[#A86360] mt-1">Bisa langsung paste dari clipboard di mana saja.</p>
+                          </div>
+                        )}
                       </div>
+
                       {editingId && !imageFile && currentImage && (
                          <div className="mt-3 flex items-center gap-3 bg-[#FDFBF7] p-2 rounded-[8px] border-[1.5px] border-[#2A1610]/5">
                            <img src={currentImage} alt="Current" className="w-10 h-10 rounded-[6px] object-cover" />
