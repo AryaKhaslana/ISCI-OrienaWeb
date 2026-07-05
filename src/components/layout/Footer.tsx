@@ -86,7 +86,7 @@ export default function Footer({ setCurrentView }: FooterProps) {
               <li className="flex items-start gap-3 group">
                 <MapPin size={18} className="shrink-0 text-[#C5A059] mt-0.5" strokeWidth={1.5} />
                 <span className="leading-[1.6]">
-                  16/04 no, Jl. Tanjungsari No.4B, Penambangan, Krembangan, Kec. Taman, Kabupaten Sidoarjo, Jawa Timur 61257
+                  Krembangan 16/04 no.4 taman, Penambangan, Krembangan, Taman, Kabupaten Sidoarjo, Jawa Timur 61257
                 </span>
               </li>
               <a 
