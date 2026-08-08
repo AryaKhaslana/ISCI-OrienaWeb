@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion'; 
 
+// IMPORT SUPABASE (Penting buat ngecek login)
+import { supabase } from './lib/supabase'; 
+
 // Import Layout & UI
 import LoadingScreen from './components/ui/LoadingScreen'; 
 import Navbar from './components/layout/Navbar';
@@ -29,6 +32,32 @@ export default function App() {
     window.location.search.includes('rahasia') ? 'kelola-oriena' : 'beranda'
   );
   
+  // ==========================================
+  // SATPAM PENGECEK LOGIN (BIAR GAK KEPENTAL PAS REFRESH)
+  // ==========================================
+  useEffect(() => {
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      // Kalau masih punya sesi aktif, paksa tetap di dashboard admin
+      if (session) {
+        setCurrentView('dashboard-rahasia');
+      }
+    };
+    
+    checkSession();
+
+    // Dengerin perubahan kalau misal admin sengaja klik LogOut
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!session && currentView === 'dashboard-rahasia') {
+        setCurrentView('beranda');
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [currentView]);
+  // ==========================================
+
   // State untuk menyimpan detail barang di keranjang
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   

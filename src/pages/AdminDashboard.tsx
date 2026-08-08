@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { LogOut, Plus, Trash2, Package, RefreshCw, X, Cookie, BarChart2, Upload, Edit2 } from 'lucide-react';
+import { LogOut, Plus, Trash2, Package, RefreshCw, X, Cookie, BarChart2, Upload, Edit2, Search, CheckCircle } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 interface AdminDashboardProps {
@@ -22,7 +22,6 @@ export default function AdminDashboard({ setCurrentView }: AdminDashboardProps) 
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   
-  // State form
   const [newName, setNewName] = useState('');
   const [newCategory, setNewCategory] = useState('Cookies');
   const [newPrice, setNewPrice] = useState('');
@@ -31,9 +30,28 @@ export default function AdminDashboard({ setCurrentView }: AdminDashboardProps) 
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
 
-  // STATE BARU BUAT EDIT
   const [editingId, setEditingId] = useState<number | null>(null);
-  const [currentImage, setCurrentImage] = useState<string>(''); // Nyimpen URL foto lama kalau ga mau diganti
+  const [currentImage, setCurrentImage] = useState<string>(''); 
+
+  const [searchTerm, setSearchTerm] = useState('');
+  const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        setCurrentView('beranda'); 
+      }
+    };
+    checkAuth();
+  }, [setCurrentView]);
+
+  const showToast = (message: string, type: 'success' | 'error' = 'success') => {
+    setToast({ show: true, message, type });
+    setTimeout(() => {
+      setToast({ show: false, message: '', type: 'success' });
+    }, 3000); 
+  };
 
   const fetchProducts = async () => {
     setLoading(true);
@@ -46,7 +64,35 @@ export default function AdminDashboard({ setCurrentView }: AdminDashboardProps) 
     fetchProducts();
   }, []);
 
-  // FUNGSI BUAT MBUKA MODAL DAN NGISI DATA LAMA KE DALAM FORM
+  // ==========================================
+  // SAKTI: GLOBAL PASTE LISTENER (GAK PERLU KLIK KOTAK DULU!)
+  // ==========================================
+  useEffect(() => {
+    const handleGlobalPaste = (e: ClipboardEvent) => {
+      // Cuma aktif kalau popup menu lagi dibuka
+      if (!isModalOpen) return;
+
+      const items = e.clipboardData?.items;
+      if (!items) return;
+      
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].type.indexOf('image') !== -1) {
+          const file = items[i].getAsFile();
+          if (file) {
+            setImageFile(file);
+            showToast('📸 Gambar berhasil ditangkap dari clipboard!', 'success');
+            e.preventDefault();
+          }
+          break;
+        }
+      }
+    };
+
+    window.addEventListener('paste', handleGlobalPaste);
+    return () => window.removeEventListener('paste', handleGlobalPaste);
+  }, [isModalOpen]);
+  // ==========================================
+
   const handleEditClick = (product: Product) => {
     setEditingId(product.id);
     setNewName(product.name);
@@ -54,12 +100,11 @@ export default function AdminDashboard({ setCurrentView }: AdminDashboardProps) 
     setNewPrice(product.price.toString());
     setNewDesc(product.desc);
     setNewBadge(product.badge || '');
-    setCurrentImage(product.image); // Simpen URL lama
-    setImageFile(null); // Kosongin file inputnya
+    setCurrentImage(product.image); 
+    setImageFile(null); 
     setIsModalOpen(true);
   };
 
-  // FUNGSI BUAT RESET FORM
   const resetForm = () => {
     setNewName(''); setNewCategory('Cookies'); setNewPrice(''); 
     setNewDesc(''); setNewBadge(''); setImageFile(null);
@@ -68,20 +113,18 @@ export default function AdminDashboard({ setCurrentView }: AdminDashboardProps) 
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    resetForm(); // Pastiin form bersih pas ditutup
+    resetForm(); 
   };
 
-  // FUNGSI GABUNGAN: CREATE & UPDATE
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setUploading(true);
 
     try {
-      let finalImageUrl = currentImage; // Defaultnya pake gambar lama kalau lagi mode EDIT dan ga milih gambar baru
+      let finalImageUrl = currentImage; 
 
-      // KALAU ADA GAMBAR BARU YANG DIPILIH (Buat mode Tambah BARU, atau Edit ganti foto)
       if (imageFile) {
-        const fileExt = imageFile.name.split('.').pop();
+        const fileExt = imageFile.type.split('/')[1] || 'png';
         const fileName = `${Date.now()}.${fileExt}`; 
         
         const { error: uploadError } = await supabase.storage
@@ -96,7 +139,6 @@ export default function AdminDashboard({ setCurrentView }: AdminDashboardProps) 
 
         finalImageUrl = publicUrlData.publicUrl;
 
-        // Kalau lagi mode Edit dan ngupload foto baru, foto lamanya kita hapus dari Storage biar ga menuhin
         if (editingId && currentImage) {
            const oldFileName = currentImage.split('/').pop();
            if (oldFileName) {
@@ -104,8 +146,7 @@ export default function AdminDashboard({ setCurrentView }: AdminDashboardProps) 
            }
         }
       } else if (!editingId) {
-        // Kalau mode Tambah Baru tapi gak ada gambar, tolak!
-        alert("Pilih foto kuenya dulu dong Bu!");
+        showToast("⚠️ Pilih foto kuenya dulu, Ibu!", 'error');
         setUploading(false);
         return;
       }
@@ -120,36 +161,27 @@ export default function AdminDashboard({ setCurrentView }: AdminDashboardProps) 
       };
 
       if (editingId) {
-        // JALUR UPDATE (EDIT)
-        const { error: updateError } = await supabase
-          .from('products')
-          .update(productData)
-          .eq('id', editingId);
-
+        const { error: updateError } = await supabase.from('products').update(productData).eq('id', editingId);
         if (updateError) throw updateError;
-        alert('Mantap! Data kue berhasil diperbarui!');
+        showToast('Data etalase berhasil diperbarui.');
       } else {
-        // JALUR INSERT (TAMBAH BARU)
-        const { error: insertError } = await supabase
-          .from('products')
-          .insert([productData]);
-
+        const { error: insertError } = await supabase.from('products').insert([productData]);
         if (insertError) throw insertError;
-        alert('Mantap! Menu berhasil ditambah!');
+        showToast('Menu baru berhasil ditambahkan.');
       }
 
       handleCloseModal();
       fetchProducts();
       
     } catch (error: any) {
-      alert('Waduh gagal broskie: ' + error.message);
+      showToast('Gagal memproses: ' + error.message, 'error');
     } finally {
       setUploading(false);
     }
   };
 
   const handleDelete = async (id: number, imageUrl: string) => {
-    if (window.confirm('Yakin mau hapus menu ini Bu?')) {
+    if (window.confirm('Hapus produk ini secara permanen dari etalase?')) {
       setLoading(true);
       await supabase.from('products').delete().eq('id', id);
       
@@ -160,6 +192,7 @@ export default function AdminDashboard({ setCurrentView }: AdminDashboardProps) 
       
       fetchProducts();
       setLoading(false);
+      showToast('Menu telah dihapus dari sistem.');
     }
   };
 
@@ -168,106 +201,159 @@ export default function AdminDashboard({ setCurrentView }: AdminDashboardProps) 
     setCurrentView('beranda');
   };
 
+  const filteredProducts = products.filter(product => 
+    product.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    product.category.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
-    <div className="min-h-screen bg-[#FAF5E9] p-4 md:p-8 font-jakarta">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-[#FDFBF7] p-4 md:p-8 font-jakarta relative overflow-hidden">
+      
+      {/* TOAST NOTIFICATION */}
+      <AnimatePresence>
+        {toast.show && (
+          <motion.div 
+            initial={{ opacity: 0, y: 50, scale: 0.9 }} 
+            animate={{ opacity: 1, y: 0, scale: 1 }} 
+            exit={{ opacity: 0, y: 50, scale: 0.9 }} 
+            className={`fixed bottom-8 right-8 z-[100] px-6 py-4 rounded-[16px] border-[1.5px] shadow-[0px_8px_24px_rgba(42,22,16,0.08)] flex items-center gap-3 font-medium text-sm ${toast.type === 'error' ? 'bg-[#7A1712]/10 border-[#7A1712]/30 text-[#7A1712]' : 'bg-white border-[#4A5E42]/20 text-[#4A5E42]'}`}
+          >
+            {toast.type === 'error' ? <X size={20} /> : <CheckCircle size={20} />}
+            {toast.message}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className="max-w-6xl mx-auto space-y-8">
         
         {/* Header Dashboard */}
-        <div className="flex justify-between items-center bg-white border-4 border-[#4A3022] p-6 rounded-3xl shadow-[8px_8px_0px_#4A3022] mb-8">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center bg-white border-[1.5px] border-[#2A1610]/10 p-6 rounded-[16px] shadow-[0px_4px_12px_rgba(0,0,0,0.02)] gap-4">
           <div>
-            <h1 className="text-3xl font-playfair font-black text-[#4A3022]">Ruang Ganti Admin</h1>
-            <p className="text-[#4A3022]/80 font-bold mt-1">Kelola etalase Oriena dengan mudah.</p>
+            <h1 className="text-3xl font-playfair font-bold text-[#2A1610]">Kelola Etalase</h1>
+            <p className="text-[#A86360] font-medium mt-1">Sistem Manajemen Konten Oriena.</p>
           </div>
-          <button onClick={handleLogout} className="bg-[#FAF5E9] text-red-600 border-4 border-[#4A3022] px-4 py-2 rounded-xl font-black flex items-center gap-2 hover:bg-red-600 hover:text-white transition-colors shadow-[4px_4px_0px_#4A3022] active:translate-y-1 active:shadow-none">
-            <LogOut size={20} /> Keluar
+          <button onClick={handleLogout} className="w-full md:w-auto bg-transparent text-[#7A1712] border-[1.5px] border-[#7A1712] px-5 py-2.5 rounded-[8px] font-semibold flex items-center justify-center gap-2 hover:bg-[#EFE5D5]/50 hover:-translate-y-0.5 transition-all">
+            <LogOut size={18} strokeWidth={1.5} /> Keluar
           </button>
         </div>
 
         {/* Kartu Statistik */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-[#E0D0BB] border-4 border-[#4A3022] p-6 rounded-3xl shadow-[6px_6px_0px_#4A3022] flex items-center gap-4">
-            <div className="p-4 bg-[#4A3022] text-white rounded-2xl border-2 border-[#4A3022]"><Package size={32} /></div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-white border-[1.5px] border-[#2A1610]/10 p-6 rounded-[16px] shadow-[0px_4px_12px_rgba(0,0,0,0.02)] flex items-center gap-4">
+            <div className="p-4 bg-[#EFE5D5] text-[#C5A059] rounded-[12px]"><Package size={28} strokeWidth={1.5} /></div>
             <div>
-              <p className="text-sm font-black text-[#4A3022]/70 uppercase">Total Etalase</p>
-              <h2 className="text-4xl font-playfair font-black text-[#4A3022]">{products.length} Menu</h2>
+              <p className="text-xs font-semibold text-[#A86360] uppercase tracking-wider">Total Menu</p>
+              <h2 className="text-3xl font-playfair font-bold text-[#2A1610]">{products.length}</h2>
             </div>
           </div>
-          <div className="bg-[#FAF5E9] border-4 border-[#4A3022] p-6 rounded-3xl shadow-[6px_6px_0px_#4A3022] flex flex-col justify-center">
-            <p className="text-sm font-black text-[#4A3022]/70 uppercase mb-2">Rincian Kategori</p>
+          <div className="bg-white border-[1.5px] border-[#2A1610]/10 p-6 rounded-[16px] shadow-[0px_4px_12px_rgba(0,0,0,0.02)] flex flex-col justify-center">
+            <p className="text-xs font-semibold text-[#A86360] uppercase tracking-wider mb-3">Distribusi Kategori</p>
             <div className="flex gap-2 flex-wrap">
-              <span className="bg-[#D97736] text-white px-3 py-1 rounded-md text-sm font-bold border-2 border-[#4A3022]">Cookies: {products.filter(p => p.category === 'Cookies').length}</span>
-              <span className="bg-[#829079] text-white px-3 py-1 rounded-md text-sm font-bold border-2 border-[#4A3022]">Bakery: {products.filter(p => p.category === 'Bakery').length}</span>
-              <span className="bg-[#4A3022] text-white px-3 py-1 rounded-md text-sm font-bold border-2 border-[#4A3022]">Snack: {products.filter(p => p.category === 'Snack').length}</span>
+              <span className="bg-[#EFE5D5] text-[#2A1610] px-3 py-1 rounded-full text-xs font-medium border-[1.5px] border-transparent">Cookies: {products.filter(p => p.category === 'Cookies').length}</span>
+              <span className="bg-[#EFE5D5] text-[#2A1610] px-3 py-1 rounded-full text-xs font-medium border-[1.5px] border-transparent">Bakery: {products.filter(p => p.category === 'Bakery').length}</span>
+              <span className="bg-[#EFE5D5] text-[#2A1610] px-3 py-1 rounded-full text-xs font-medium border-[1.5px] border-transparent">Snack: {products.filter(p => p.category === 'Snack').length}</span>
             </div>
           </div>
-          <div className="bg-white border-4 border-[#4A3022] p-6 rounded-3xl shadow-[6px_6px_0px_#4A3022] flex items-center gap-4">
-            <div className="p-4 bg-[#829079] text-white rounded-2xl border-2 border-[#4A3022]"><BarChart2 size={32} /></div>
+          <div className="bg-white border-[1.5px] border-[#2A1610]/10 p-6 rounded-[16px] shadow-[0px_4px_12px_rgba(0,0,0,0.02)] flex items-center gap-4">
+            <div className="p-4 bg-[#EFE5D5] text-[#4A5E42] rounded-[12px]"><BarChart2 size={28} strokeWidth={1.5} /></div>
             <div>
-              <p className="text-sm font-black text-[#4A3022]/70 uppercase">Status Database</p>
-              <h2 className="text-xl mt-1 font-jakarta font-black text-[#4A3022]">{loading ? 'Memuat...' : 'Online 🟢'}</h2>
+              <p className="text-xs font-semibold text-[#A86360] uppercase tracking-wider">Sistem Server</p>
+              <h2 className="text-lg mt-1 font-jakarta font-semibold text-[#4A5E42]">{loading ? 'Memuat...' : 'Terhubung'}</h2>
             </div>
           </div>
         </div>
 
         {/* Tabel Utama */}
-        <div className="bg-white border-4 border-[#4A3022] p-6 md:p-8 rounded-3xl shadow-[8px_8px_0px_#4A3022]">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-            <h2 className="text-2xl font-playfair font-black text-[#4A3022]">Daftar Produk Aktif</h2>
-            <div className="flex gap-3">
-              <button onClick={fetchProducts} className="p-3 bg-[#FAF5E9] border-4 border-[#4A3022] rounded-xl hover:bg-[#D97736] hover:text-white transition-colors shadow-[4px_4px_0px_#4A3022] active:translate-y-1 active:shadow-none">
-                <RefreshCw size={20} className={loading ? 'animate-spin' : ''} />
+        <div className="bg-white border-[1.5px] border-[#2A1610]/10 p-6 md:p-8 rounded-[16px] shadow-[0px_4px_12px_rgba(0,0,0,0.02)]">
+          
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 gap-4 border-b-[1.5px] border-[#2A1610]/10 pb-6">
+            <h2 className="text-2xl font-playfair font-bold text-[#2A1610] w-full lg:w-auto">Inventaris Produk</h2>
+            
+            <div className="flex flex-col md:flex-row gap-3 w-full lg:w-auto">
+              <div className="relative w-full md:w-64">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#2A1610]/40" size={18} strokeWidth={1.5} />
+                <input 
+                  type="text" 
+                  placeholder="Cari menu..." 
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full bg-[#EFE5D5]/50 border-[1.5px] border-transparent rounded-[8px] pl-10 pr-4 py-2 outline-none font-medium text-[#2A1610] focus:border-[#C5A059] focus:bg-white transition-colors text-sm" 
+                />
+              </div>
+
+              <button onClick={fetchProducts} className="p-2.5 bg-transparent border-[1.5px] border-[#2A1610]/20 text-[#2A1610] rounded-[8px] hover:bg-[#EFE5D5]/50 transition-colors flex justify-center">
+                <RefreshCw size={18} strokeWidth={1.5} className={loading ? 'animate-spin' : ''} />
               </button>
-              <button onClick={() => setIsModalOpen(true)} className="bg-[#D97736] text-white border-4 border-[#4A3022] px-6 py-3 rounded-xl font-black flex items-center gap-2 hover:bg-[#c46a2b] transition-colors shadow-[4px_4px_0px_#4A3022] active:translate-y-1 active:shadow-none">
-                <Plus size={20} strokeWidth={3} /> Tambah Menu Baru
+              
+              <button onClick={() => setIsModalOpen(true)} className="bg-[#7A1712] text-[#FDFBF7] px-5 py-2.5 rounded-[8px] font-semibold text-sm flex items-center justify-center gap-2 hover:bg-[#5E120E] transition-colors shadow-[0px_4px_12px_rgba(122,23,18,0.2)] hover:-translate-y-0.5 w-full md:w-auto">
+                <Plus size={18} strokeWidth={2} /> Tambah Menu
               </button>
             </div>
           </div>
 
           {loading && products.length === 0 ? (
-            <div className="text-center py-16 font-bold text-[#4A3022]/60 animate-pulse">Menarik data dari server...</div>
+            <div className="flex flex-col items-center justify-center py-20 text-[#C5A059]">
+               <Cookie size={48} className="animate-spin mb-4" strokeWidth={1.5} />
+               <p className="font-medium text-[#A86360] animate-pulse">Menyiapkan etalase dari server...</p>
+            </div>
           ) : (
             <div className="overflow-x-auto custom-scrollbar">
               <table className="w-full text-left border-collapse min-w-[600px]">
                 <thead>
-                  <tr className="border-b-4 border-[#4A3022]">
-                    <th className="pb-4 font-black text-[#4A3022] w-20">Foto</th>
-                    <th className="pb-4 font-black text-[#4A3022]">Info Produk</th>
-                    <th className="pb-4 font-black text-[#4A3022]">Harga</th>
-                    <th className="pb-4 font-black text-[#4A3022] text-right">Aksi</th>
+                  <tr className="border-b-[1.5px] border-[#2A1610]/10 text-xs font-semibold text-[#A86360] uppercase tracking-wider">
+                    <th className="pb-4 w-24">Foto</th>
+                    <th className="pb-4">Informasi Produk</th>
+                    <th className="pb-4">Harga Unit</th>
+                    <th className="pb-4 text-right">Aksi</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {products.map((p) => (
-                    <tr key={p.id} className="border-b-2 border-[#4A3022]/10 hover:bg-[#FAF5E9] transition-colors">
-                      <td className="py-4">
-                        <img src={p.image} alt={p.name} className="w-16 h-16 rounded-xl object-cover border-2 border-[#4A3022]" />
-                      </td>
-                      <td className="py-4 pr-4">
-                        <div className="font-black text-lg text-[#4A3022] mb-1 flex items-center gap-2">
-                          {p.name}
-                          {p.badge && (
-                            <span className="bg-[#D97736] text-white text-[10px] px-2 py-0.5 rounded-md font-bold tracking-wider">
-                              {p.badge}
-                            </span>
-                          )}
-                        </div>
-                        <div className="inline-block px-2 py-1 bg-white border-2 border-[#4A3022] text-xs text-[#D97736] font-black uppercase rounded-md">{p.category}</div>
-                      </td>
-                      <td className="py-4 font-black text-[#4A3022] text-lg">Rp {p.price.toLocaleString('id-ID')}</td>
-                      <td className="py-4 text-right">
-                        <div className="flex justify-end gap-2">
-                          {/* TOMBOL EDIT BARU */}
-                          <button onClick={() => handleEditClick(p)} className="p-3 bg-white text-[#D97736] border-2 border-[#4A3022] rounded-xl hover:bg-[#D97736] hover:text-white transition-colors shadow-[2px_2px_0px_#4A3022] active:translate-y-1 active:shadow-none">
-                            <Edit2 size={20} />
-                          </button>
-                          <button onClick={() => handleDelete(p.id, p.image)} className="p-3 bg-white text-red-600 border-2 border-[#4A3022] rounded-xl hover:bg-red-600 hover:text-white transition-colors shadow-[2px_2px_0px_#4A3022] active:translate-y-1 active:shadow-none">
-                            <Trash2 size={20} />
-                          </button>
-                        </div>
+                  <AnimatePresence>
+                    {filteredProducts.map((p) => (
+                      <motion.tr 
+                        layout
+                        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                        key={p.id} 
+                        className="border-b-[1.5px] border-[#2A1610]/5 hover:bg-[#EFE5D5]/30 transition-colors"
+                      >
+                        <td className="py-4">
+                          <img src={p.image} alt={p.name} className="w-16 h-16 rounded-[12px] object-cover border-[1.5px] border-[#2A1610]/10 shadow-[0px_4px_12px_rgba(0,0,0,0.05)]" />
+                        </td>
+                        <td className="py-4 pr-4">
+                          <div className="font-semibold text-base text-[#2A1610] mb-1 flex items-center gap-2">
+                            {p.name}
+                            {p.badge && (
+                              <span className="bg-[#EFE5D5] text-[#C5A059] border-[1px] border-[#C5A059]/30 text-[10px] px-2 py-0.5 rounded-full font-bold tracking-wider">
+                                {p.badge}
+                              </span>
+                            )}
+                          </div>
+                          <div className="text-sm text-[#A86360]">{p.category}</div>
+                        </td>
+                        <td className="py-4 font-semibold text-[#2A1610]">Rp {p.price.toLocaleString('id-ID')}</td>
+                        <td className="py-4 text-right">
+                          <div className="flex justify-end gap-2">
+                            <button onClick={() => handleEditClick(p)} className="p-2 text-[#C5A059] hover:bg-[#C5A059]/10 rounded-[8px] transition-colors" title="Edit">
+                              <Edit2 size={18} strokeWidth={1.5} />
+                            </button>
+                            <button onClick={() => handleDelete(p.id, p.image)} className="p-2 text-[#7A1712] hover:bg-[#7A1712]/10 rounded-[8px] transition-colors" title="Hapus">
+                              <Trash2 size={18} strokeWidth={1.5} />
+                            </button>
+                          </div>
+                        </td>
+                      </motion.tr>
+                    ))}
+                  </AnimatePresence>
+                  
+                  {filteredProducts.length === 0 && products.length > 0 && (
+                    <tr>
+                      <td colSpan={4} className="text-center py-16">
+                         <Search size={32} strokeWidth={1.5} className="mx-auto text-[#A86360]/50 mb-3" />
+                         <p className="font-medium text-[#A86360]">Produk "{searchTerm}" tidak ditemukan di etalase.</p>
                       </td>
                     </tr>
-                  ))}
-                  {products.length === 0 && <tr><td colSpan={4} className="text-center py-10 font-bold text-[#4A3022]/50">Belum ada menu, tambahin dong broskie!</td></tr>}
+                  )}
+                  {products.length === 0 && <tr><td colSpan={4} className="text-center py-16 font-medium text-[#A86360]">Etalase masih kosong. Tambahkan menu pertama Anda.</td></tr>}
                 </tbody>
               </table>
             </div>
@@ -277,28 +363,28 @@ export default function AdminDashboard({ setCurrentView }: AdminDashboardProps) 
         {/* POPUP MODAL TAMBAH/EDIT MENU */}
         <AnimatePresence>
           {isModalOpen && (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#4A3022]/80 backdrop-blur-sm">
-              <motion.div initial={{ scale: 0.9, y: 50 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.9, y: 50 }} className="bg-white w-full max-w-lg rounded-[2rem] border-4 border-[#4A3022] shadow-[12px_12px_0px_#D97736] overflow-hidden">
-                <div className="bg-[#FAF5E9] border-b-4 border-[#4A3022] p-6 flex justify-between items-center">
-                  <h2 className="text-2xl font-playfair font-black text-[#4A3022] flex items-center gap-2">
-                    <Cookie size={24} /> {editingId ? 'Edit Menu' : 'Masukkan Menu Baru'}
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#2A1610]/40 backdrop-blur-sm">
+              <motion.div initial={{ scale: 0.95, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 20 }} className="bg-white w-full max-w-lg rounded-[16px] shadow-[0px_12px_32px_rgba(0,0,0,0.1)] overflow-hidden">
+                <div className="bg-[#FDFBF7] border-b-[1.5px] border-[#2A1610]/10 p-6 flex justify-between items-center">
+                  <h2 className="text-xl font-playfair font-bold text-[#2A1610] flex items-center gap-2">
+                    <Cookie size={20} strokeWidth={1.5} className="text-[#C5A059]" /> {editingId ? 'Ubah Informasi Menu' : 'Tambah Menu Baru'}
                   </h2>
-                  <button onClick={handleCloseModal} className="p-2 bg-white border-4 border-[#4A3022] rounded-xl hover:bg-red-500 hover:text-white transition-colors shadow-[4px_4px_0px_#4A3022] active:translate-y-1 active:shadow-none">
-                    <X size={20} strokeWidth={3} />
+                  <button onClick={handleCloseModal} className="p-2 text-[#A86360] hover:bg-[#7A1712]/10 hover:text-[#7A1712] rounded-full transition-colors">
+                    <X size={20} strokeWidth={1.5} />
                   </button>
                 </div>
 
                 <div className="p-6 max-h-[70vh] overflow-y-auto custom-scrollbar">
                   <form onSubmit={handleSubmit} className="space-y-5">
                     <div>
-                      <label className="text-xs font-black text-[#4A3022] uppercase tracking-wider">Nama Kue</label>
-                      <input type="text" required value={newName} onChange={e => setNewName(e.target.value)} className="w-full mt-1 bg-[#FAF5E9] border-4 border-[#4A3022] rounded-xl px-4 py-3 outline-none font-bold text-[#4A3022] focus:border-[#D97736] transition-colors" />
+                      <label className="text-xs font-semibold text-[#2A1610] uppercase tracking-wider">Nama Produk</label>
+                      <input type="text" required value={newName} onChange={e => setNewName(e.target.value)} className="w-full mt-1.5 bg-[#EFE5D5]/50 border-[1.5px] border-transparent rounded-[8px] px-4 py-2.5 outline-none font-medium text-[#2A1610] focus:border-[#C5A059] focus:bg-white transition-colors text-sm" />
                     </div>
                     
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="text-xs font-black text-[#4A3022] uppercase tracking-wider">Kategori</label>
-                        <select value={newCategory} onChange={e => setNewCategory(e.target.value)} className="w-full mt-1 bg-[#FAF5E9] border-4 border-[#4A3022] rounded-xl px-4 py-3 outline-none font-bold text-[#4A3022] focus:border-[#D97736] transition-colors appearance-none">
+                        <label className="text-xs font-semibold text-[#2A1610] uppercase tracking-wider">Kategori</label>
+                        <select value={newCategory} onChange={e => setNewCategory(e.target.value)} className="w-full mt-1.5 bg-[#EFE5D5]/50 border-[1.5px] border-transparent rounded-[8px] px-4 py-2.5 outline-none font-medium text-[#2A1610] focus:border-[#C5A059] focus:bg-white transition-colors text-sm appearance-none">
                           <option value="Cookies">Cookies</option>
                           <option value="Bakery">Bakery</option>
                           <option value="Snack">Snack</option>
@@ -306,50 +392,68 @@ export default function AdminDashboard({ setCurrentView }: AdminDashboardProps) 
                         </select>
                       </div>
                       <div>
-                        <label className="text-xs font-black text-[#4A3022] uppercase tracking-wider">Harga (Rp)</label>
-                        <input type="number" required value={newPrice} onChange={e => setNewPrice(e.target.value)} className="w-full mt-1 bg-[#FAF5E9] border-4 border-[#4A3022] rounded-xl px-4 py-3 outline-none font-bold text-[#4A3022] focus:border-[#D97736] transition-colors" />
+                        <label className="text-xs font-semibold text-[#2A1610] uppercase tracking-wider">Harga Unit (Rp)</label>
+                        <input type="number" required value={newPrice} onChange={e => setNewPrice(e.target.value)} className="w-full mt-1.5 bg-[#EFE5D5]/50 border-[1.5px] border-transparent rounded-[8px] px-4 py-2.5 outline-none font-medium text-[#2A1610] focus:border-[#C5A059] focus:bg-white transition-colors text-sm" />
                       </div>
                     </div>
 
                     <div>
-                      <label className="text-xs font-black text-[#4A3022] uppercase tracking-wider">Label Spesial (Opsional)</label>
-                      <select value={newBadge} onChange={e => setNewBadge(e.target.value)} className="w-full mt-1 bg-[#FAF5E9] border-4 border-[#4A3022] rounded-xl px-4 py-3 outline-none font-bold text-[#4A3022] focus:border-[#D97736] transition-colors appearance-none">
-                        <option value="">-- Tidak Ada --</option>
+                      <label className="text-xs font-semibold text-[#2A1610] uppercase tracking-wider">Label Etalase</label>
+                      <select value={newBadge} onChange={e => setNewBadge(e.target.value)} className="w-full mt-1.5 bg-[#EFE5D5]/50 border-[1.5px] border-transparent rounded-[8px] px-4 py-2.5 outline-none font-medium text-[#2A1610] focus:border-[#C5A059] focus:bg-white transition-colors text-sm appearance-none">
+                        <option value="">-- Tanpa Label --</option>
                         <option value="BEST SELLER">BEST SELLER</option>
                       </select>
-                      <p className="text-[10px] text-[#4A3022]/60 mt-1 font-bold">Pilih "BEST SELLER" agar kue ini muncul di urutan paling atas Katalog Pembeli.</p>
+                      <p className="text-[11px] text-[#A86360] mt-1.5">Opsi "BEST SELLER" akan menaikkan posisi produk ke puncak katalog.</p>
                     </div>
                     
+                    {/* BAGIAN UPLOAD FOTO YANG DIROMBAK */}
                     <div>
-                      <label className="text-xs font-black text-[#4A3022] uppercase tracking-wider">
-                        {editingId ? 'Ganti Foto (Biarkan kosong jika tidak diganti)' : 'Upload Foto Asli'}
+                      <label className="text-xs font-semibold text-[#2A1610] uppercase tracking-wider">
+                        {editingId ? 'Perbarui Foto (Abaikan jika tidak diubah)' : 'Unggah Foto Produk'}
                       </label>
-                      <div className="mt-1 relative">
+                      
+                      <div className="mt-1.5 relative flex flex-col items-center justify-center w-full min-h-[120px] border-[1.5px] border-dashed border-[#C5A059] bg-[#EFE5D5]/30 rounded-[8px] hover:bg-[#EFE5D5]/70 transition-colors cursor-pointer overflow-hidden group">
+                        
+                        {/* Input file bawaan (tetep bisa diklik manual kalau mau) */}
                         <input 
                           type="file" 
                           accept="image/*" 
-                          required={!editingId} // Wajib kalau mode tambah baru, nggak wajib kalau mode edit
                           onChange={e => setImageFile(e.target.files?.[0] || null)} 
-                          className="w-full bg-[#FAF5E9] border-4 border-[#4A3022] rounded-xl px-4 py-3 outline-none font-bold text-[#4A3022] file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-2 file:border-[#4A3022] file:text-sm file:font-bold file:bg-[#D97736] file:text-white hover:file:bg-[#c46a2b] transition-colors" 
+                          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" 
                         />
+                        
+                        {imageFile ? (
+                          <div className="flex flex-col items-center justify-center z-0 p-3 w-full">
+                            <img src={URL.createObjectURL(imageFile)} alt="Preview" className="w-16 h-16 object-cover rounded-[6px] shadow-sm mb-2 border-[1.5px] border-[#C5A059]" />
+                            <p className="text-[10px] text-[#A86360] font-bold text-center px-2 w-full truncate">Siap di-upload: {imageFile.name}</p>
+                          </div>
+                        ) : (
+                          <div className="flex flex-col items-center justify-center z-0 p-4 text-center pointer-events-none">
+                            <Upload size={24} strokeWidth={1.5} className="text-[#C5A059] mb-2 group-hover:scale-110 transition-transform" />
+                            <p className="text-xs font-semibold text-[#2A1610]">Klik area ini atau <span className="text-[#7A1712] font-bold">CTRL+V (Paste)</span></p>
+                            <p className="text-[10px] text-[#A86360] mt-1">Bisa langsung paste dari clipboard di mana saja.</p>
+                          </div>
+                        )}
                       </div>
-                      {/* Kalau mode edit dan ga masukin foto baru, tampilin preview foto lama biar admin tenang */}
-                      {editingId && !imageFile && (
-                         <div className="mt-2 flex items-center gap-2">
-                           <span className="text-[10px] font-bold text-[#4A3022]/60">Foto saat ini:</span>
-                           <img src={currentImage} alt="Current" className="w-8 h-8 rounded border border-[#4A3022] object-cover" />
+
+                      {editingId && !imageFile && currentImage && (
+                         <div className="mt-3 flex items-center gap-3 bg-[#FDFBF7] p-2 rounded-[8px] border-[1.5px] border-[#2A1610]/5">
+                           <img src={currentImage} alt="Current" className="w-10 h-10 rounded-[6px] object-cover" />
+                           <span className="text-[11px] font-medium text-[#A86360]">Foto yang digunakan saat ini.</span>
                          </div>
                       )}
                     </div>
 
                     <div>
-                      <label className="text-xs font-black text-[#4A3022] uppercase tracking-wider">Deskripsi Singkat</label>
-                      <textarea required value={newDesc} onChange={e => setNewDesc(e.target.value)} rows={3} className="w-full mt-1 bg-[#FAF5E9] border-4 border-[#4A3022] rounded-xl px-4 py-3 outline-none font-bold text-[#4A3022] focus:border-[#D97736] transition-colors"></textarea>
+                      <label className="text-xs font-semibold text-[#2A1610] uppercase tracking-wider">Deskripsi Singkat</label>
+                      <textarea required value={newDesc} onChange={e => setNewDesc(e.target.value)} rows={3} className="w-full mt-1.5 bg-[#EFE5D5]/50 border-[1.5px] border-transparent rounded-[8px] px-4 py-2.5 outline-none font-medium text-[#2A1610] focus:border-[#C5A059] focus:bg-white transition-colors text-sm"></textarea>
                     </div>
-                    <button type="submit" disabled={uploading} className="w-full bg-[#D97736] text-white border-4 border-[#4A3022] py-4 mt-2 rounded-xl font-black text-lg shadow-[6px_6px_0px_#4A3022] hover:bg-[#c46a2b] active:translate-y-1 active:shadow-none transition-all disabled:opacity-50 flex items-center justify-center gap-2">
-                      {uploading ? <RefreshCw className="animate-spin" /> : <Upload />}
-                      {uploading ? 'Menyimpan...' : (editingId ? 'Simpan Perubahan' : 'Simpan ke Database')}
-                    </button>
+                    <div className="pt-2">
+                      <button type="submit" disabled={uploading} className="w-full bg-[#7A1712] text-[#FDFBF7] py-3 rounded-[8px] font-bold text-sm shadow-[0px_4px_12px_rgba(122,23,18,0.2)] hover:bg-[#5E120E] active:-translate-y-0 hover:-translate-y-0.5 transition-all disabled:opacity-50 flex items-center justify-center gap-2">
+                        {uploading ? <RefreshCw className="animate-spin" size={18} /> : <Upload size={18} />}
+                        {uploading ? 'Memproses Data...' : (editingId ? 'Simpan Perubahan' : 'Terbitkan Produk')}
+                      </button>
+                    </div>
                   </form>
                 </div>
               </motion.div>

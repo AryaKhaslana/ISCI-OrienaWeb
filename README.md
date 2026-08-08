@@ -1,33 +1,40 @@
-# 🥐 Oriena Artisan Bakery - E-Commerce Frontend
+# 🍪 Oriena - Premium Artisan Bakery & Cookies
 
-![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
-![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)
-![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
-![Framer Motion](https://img.shields.io/badge/Framer_Motion-black?style=for-the-badge&logo=framer&logoColor=blue)
+Oriena adalah platform *e-katalog* dan *Content Management System (CMS)* yang dirancang khusus untuk bisnis F&B (*Bakery*). Dibangun dengan fokus pada antarmuka yang elegan, mulus, dan performa tinggi untuk memberikan pengalaman belanja kelas atas bagi pelanggan, sekaligus kemudahan manajemen inventaris bagi admin.
 
-> **Membawa Hangatnya Oven Kami ke Meja Anda.**
-> 
-> OrienaWeb adalah proyek *frontend e-commerce* modern yang dirancang khusus untuk UMKM Oriena Artisan Bakery (sebelumnya PasPastry). Mengusung gaya desain **Neo-Brutalism** yang *bold*, estetis, dan interaktif. Proyek ini dibangun untuk memberikan pengalaman berbelanja kue kering yang unik, *playful*, dan profesional.
+![Oriena Preview](https://via.placeholder.com/1200x600.png?text=Oriena+Web+Preview) *(Ganti link ini dengan screenshot web lu nanti!)*
 
----
+## ✨ Fitur Utama
 
-## ✨ Fitur Unggulan
+### 🛍️ Untuk Pelanggan (Frontend)
+*   **Katalog Interaktif:** Tampilan *grid* menu dengan efek *hover* dan animasi *smooth* (Framer Motion).
+*   **Highlight Koleksi Unggulan:** *Auto-play carousel* untuk produk dengan label eksklusif (contoh: "BEST SELLER").
+*   **Pencarian & Filter Cerdas:** Filter berdasarkan kategori (Cookies, Bakery, Snack) dan pencarian teks *real-time*.
+*   **Direct Order:** Terintegrasi langsung dengan pemesanan partai besar via WhatsApp.
 
-Proyek ini tidak hanya menampilkan katalog, tetapi juga memberikan pengalaman interaktif (*User Experience*) tingkat lanjut:
-
-- 🎁 **Interactive Hampers Builder:** Fitur *drag-and-drop* (Tarik & Lepas) yang memungkinkan pengguna merakit *custom box hampers* mereka sendiri secara visual.
-- 🎯 **Taste Matcher Quiz:** Kuis interaktif untuk memberikan rekomendasi kue terbaik berdasarkan preferensi dan *mood* pengguna.
-- 📱 **Fully Responsive UI:** Tampilan yang mulus dan proporsional di semua ukuran layar (Desktop, Tablet, & Mobile).
-- 💬 **WhatsApp Smart Checkout:** Integrasi pesanan langsung ke WhatsApp admin dengan detail *invoice* dan *custom notes* yang ter- *generate* otomatis.
-- 🚀 **Smooth Micro-Interactions:** Animasi transisi yang elegan dan interaksi elemen berbasis `Framer Motion`.
+### 🔐 Untuk Admin (CMS Dashboard)
+*   **Sistem Autentikasi:** Gerbang *login* yang sangat aman untuk admin.
+*   **CRUD Manajemen Etalase:** Tambah, Edit, Baca, dan Hapus menu secara *real-time*.
+*   **Upload Media Otomatis:** Mengunggah dan mengelola foto produk langsung ke *Cloud Storage*.
+*   **Keamanan Level Industri (RLS):** Database dilindungi dengan *Row Level Security* di Supabase untuk mencegah akses modifikasi dari pihak luar.
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **Framework:** React 18
-- **Build Tool:** Vite
-- **Styling:** Tailwind CSS
-- **Animation:** Framer Motion
-- **Icons:** Lucide React
-- **Deployment:** Vercel / Dewabiz (TBA)
+Platform ini dibangun menggunakan teknologi modern:
+
+**Client-Side (Frontend):**
+*   [React 18](https://react.dev/) - UI Library
+*   [Vite](https://vitejs.dev/) - Build Tool & Bundler
+*   [Tailwind CSS](https://tailwindcss.com/) - Utility-first Styling
+*   [Framer Motion](https://www.framer.com/motion/) - Animation Library
+*   [Lucide React](https://lucide.dev/) - Beautiful Iconography
+
+**Server-Side (Backend & Database):**
+*   [Supabase](https://supabase.com/) - Backend-as-a-Service (BaaS)
+*   **PostgreSQL** - Database Utama
+*   **Supabase Storage** - Image Cloud Hosting
+*   **Supabase Auth** - JWT Authentication
+
+---
